@@ -12,24 +12,3 @@
         android:layout_width="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    android:orientation="vertical"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent">-->
-    <!--&lt;!&ndash;    android:theme="@style/Theme.MIPT_2024"&ndash;&gt;-->
-    <!--&lt;!&ndash;    android:id="@+id/root_layout">&ndash;&gt;-->
-
-    <!--&lt;!&ndash;    <androidx.fragment.app.FragmentContainerView&ndash;&gt;-->
-    <!--&lt;!&ndash;        android:id="@+id/fragment_root_container_view"&ndash;&gt;-->
-    <!--&lt;!&ndash;        android:layout_height="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;        android:layout_width="match_parent"/>&ndash;&gt;-->
-
-    <!--    <EditText-->
-    <!--        android:id="@+id/editTextText"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:ems="10"-->
-    <!--        android:inputType="text"-->
-    <!--        android:text="Name" />-->
-    <!--</LinearLayout>-->

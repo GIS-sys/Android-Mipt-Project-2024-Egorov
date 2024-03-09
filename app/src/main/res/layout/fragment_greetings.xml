@@ -6,8 +6,15 @@
     android:background="@drawable/greeting_background">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/greeting_description" />
+        android:text="@string/greeting_description"
+        android:gravity="top"/>
+
+    <Button
+        android:id="@+id/btn_go_to_main"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:text="Start" />
 </LinearLayout>
