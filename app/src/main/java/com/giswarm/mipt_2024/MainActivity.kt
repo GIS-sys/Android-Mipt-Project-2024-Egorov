@@ -1,68 +1,18 @@
 package com.giswarm.mipt_2024
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.giswarm.mipt_2024.ui.theme.MIPT_2024Theme
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            MIPT_2024Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Angelina")
-//                    Counter()
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Surface(color = Color.Magenta) {
-        Text(
-            text = "Hello to you, $name!",
-            modifier = modifier.padding(16.dp)
-        )
-    }
-}
-
-//@Composable
-//fun Counter(modifier: Modifier = Modifier) {
-//    Surface(color = Color.Red) {
-//        Button(onClick = { /*TODO*/ }) {
-//
+        setContentView(R.layout.root_layout)
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.commit {
+//                setReorderingAllowed(true)
+//                add(R.id.fragment_root_container_view, GreetingsFragment())
+//            }
 //        }
-//        Text(
-//            text = "Counter:",
-//            modifier = modifier.offset(x = 20.dp, y = 1000.dp)
-//        )
-//    }
-//}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MIPT_2024Theme {
-        Greeting("Angelina")
-//        Counter()
     }
 }
