@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,6 +28,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Greeting("Angelina")
+//                    Counter()
                 }
             }
         }
@@ -42,10 +45,24 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     }
 }
 
+//@Composable
+//fun Counter(modifier: Modifier = Modifier) {
+//    Surface(color = Color.Red) {
+//        Button(onClick = { /*TODO*/ }) {
+//
+//        }
+//        Text(
+//            text = "Counter:",
+//            modifier = modifier.offset(x = 20.dp, y = 1000.dp)
+//        )
+//    }
+//}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     MIPT_2024Theme {
         Greeting("Angelina")
+//        Counter()
     }
 }
