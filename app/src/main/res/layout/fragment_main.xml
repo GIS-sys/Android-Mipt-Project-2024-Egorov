@@ -3,5 +3,29 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/alipay_login"
+        android:layout_weight="0.5"
+        android:background="#27b"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view_main"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/taobao_login"
+        android:layout_weight="0.5"
+        android:background="#ed6d00"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">>
+        <Button
+            android:id="@+id/btn_switch_inner_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:gravity="center"
+            android:text="Start" />
+    </LinearLayout>
 </LinearLayout>
