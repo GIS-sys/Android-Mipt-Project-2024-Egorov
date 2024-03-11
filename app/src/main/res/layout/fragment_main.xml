@@ -4,28 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
-        android:id="@+id/alipay_login"
         android:layout_weight="0.5"
         android:background="#27b"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container_view_main"
+            android:id="@+id/main_fragment_container_view"
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/taobao_login"
         android:layout_weight="0.5"
         android:background="#ed6d00"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">>
+        android:layout_width="match_parent">
+
         <Button
-            android:id="@+id/btn_switch_inner_fragment"
+            android:id="@+id/main_btn_switch_inner_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:gravity="center"
+            android:text="Change view" />
+
+        <Button
+            android:id="@+id/main_btn_go_to_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:gravity=""
+            android:text="Settings" />
+
+        <Button
+            android:id="@+id/main_btn_go_to_credentials"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:gravity="center"
-            android:text="Start" />
+            android:text="Credentials" />
     </LinearLayout>
 </LinearLayout>

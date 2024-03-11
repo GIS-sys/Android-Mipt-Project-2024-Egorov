@@ -1,4 +1,4 @@
-package com.giswarm.mipt_2024
+package com.giswarm.mipt_2024.position
 
 class MoonPosition {
     companion object {

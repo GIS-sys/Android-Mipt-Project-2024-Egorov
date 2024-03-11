@@ -1,12 +1,11 @@
-package com.giswarm.mipt_2024
+package com.giswarm.mipt_2024.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import com.giswarm.mipt_2024.R
 
-class TextViewFragment : Fragment(R.layout.fragment_text_view) {
+class VisualViewFragment : Fragment(R.layout.fragment_visual_view) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
