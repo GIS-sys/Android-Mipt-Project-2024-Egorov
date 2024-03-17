@@ -1,11 +1,15 @@
 package com.giswarm.mipt_2024.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.giswarm.mipt_2024.R
+import com.giswarm.mipt_2024.position.DevicePositionManager
+import com.giswarm.mipt_2024.position.GpsPositionManager
+import kotlin.concurrent.timer
 
 class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -15,6 +19,11 @@ class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
                 setReorderingAllowed(true)
                 replace(R.id.root_fragment_container_view, MainFragment())
             }
+        }
+        timer(initialDelay = 1000L, period = 1000L ) {
+            Log.d("TIMER_ACC", DevicePositionManager.get().toString())
+            Log.d("TIMER_GPS", GpsPositionManager.get().toString())
+            view.findViewById<Button>(R.id.greetings_btn_go_to_main).text = DevicePositionManager.get().toString()
         }
     }
 }
