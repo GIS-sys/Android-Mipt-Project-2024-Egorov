@@ -14,10 +14,14 @@ import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 
 
@@ -36,7 +40,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
     }
 
     private lateinit var sensorManager: SensorManager
@@ -51,15 +55,22 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
             Log.d("SENSOR", "X: $x, Y: $y, Z: $z")
 
-            val formBody = FormBody.Builder()
-                .add("x", "$x")
-                .add("y", "$y")
-                .add("z", "$z")
-                .build()
-            val request = Request.Builder()
-                //.url("http://192.168.1.18:8080/new_data")
-                .url("http://postman-echo.com/post")
-                .post(formBody)
+            var jsonObject = JSONObject()
+            try {
+                jsonObject.put("x", "$x")
+                jsonObject.put("y", "$y")
+                jsonObject.put("z", "$z")
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+
+            val client = OkHttpClient()
+            val mediaType = "application/json; charset=utf-8".toMediaType()
+            val body = jsonObject.toString().toRequestBody(mediaType)
+            val request: Request = Request.Builder()
+                .url("http://192.168.1.18:8080/new_data")
+                //.url("http://postman-echo.com/post")
+                .post(body)
                 .build()
 
             try {
