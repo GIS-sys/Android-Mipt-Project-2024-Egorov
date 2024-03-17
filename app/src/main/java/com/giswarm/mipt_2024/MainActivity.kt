@@ -29,14 +29,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.root_layout)
-        Log.d("SENSOR", "start")
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add(R.id.root_fragment_container_view, GreetingsFragment())
             }
         }
-        Log.d("SENSORSTART", "start")
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -57,14 +55,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
             var jsonObject = JSONObject()
             try {
-                jsonObject.put("x", "$x")
-                jsonObject.put("y", "$y")
-                jsonObject.put("z", "$z")
+                jsonObject.put("ax", "$x")
+                jsonObject.put("ay", "$y")
+                jsonObject.put("az", "$z")
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
 
-            val client = OkHttpClient()
             val mediaType = "application/json; charset=utf-8".toMediaType()
             val body = jsonObject.toString().toRequestBody(mediaType)
             val request: Request = Request.Builder()
