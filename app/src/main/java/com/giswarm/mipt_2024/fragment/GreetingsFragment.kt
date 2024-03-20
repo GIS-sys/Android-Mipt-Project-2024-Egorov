@@ -20,11 +20,5 @@ class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
                 replace(R.id.root_fragment_container_view, MainFragment())
             }
         }
-        timer(initialDelay = 1000L, period = 1000L) {
-            Log.d("TIMER_ACC", DevicePositionManager.get().toString())
-            Log.d("TIMER_GPS", GpsPositionManager.get().toString())
-            view.findViewById<Button>(R.id.greetings_btn_go_to_main).text =
-                GpsPositionManager.get().toString()
-        }
     }
 }
