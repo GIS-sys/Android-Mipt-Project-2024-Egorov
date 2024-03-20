@@ -18,7 +18,14 @@ import org.json.JSONObject
 import java.io.IOException
 
 class DevicePositionManager(context: Context) : SensorEventListener {
-    data class DevicePosition(var accX: Double, var accY: Double, var accZ: Double, var gyrX: Double, var gyrY: Double, var gyrZ: Double)
+    data class DevicePosition(
+        var accX: Double,
+        var accY: Double,
+        var accZ: Double,
+        var gyrX: Double,
+        var gyrY: Double,
+        var gyrZ: Double
+    )
 
     companion object {
         private lateinit var instance: DevicePositionManager

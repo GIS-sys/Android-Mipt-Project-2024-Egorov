@@ -12,6 +12,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     companion object {
         private const val KEY_FRAGMENT_INDEX: String = "KEY_FRAGMENT_INDEX"
     }
+
     private var fragmentIndex: Long = -1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,12 +58,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         fragmentIndex = (fragmentIndex + 1) % 2
         childFragmentManager.commit {
             setReorderingAllowed(true)
-            replace(R.id.main_fragment_container_view,
+            replace(
+                R.id.main_fragment_container_view,
                 when (fragmentIndex) {
                     0.toLong() -> TextViewFragment()
                     1.toLong() -> VisualViewFragment()
                     else -> TODO()
-                })
+                }
+            )
         }
     }
 }
