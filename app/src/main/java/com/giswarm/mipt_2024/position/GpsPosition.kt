@@ -6,8 +6,9 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 
-class GpsPositionManager(context: Context) {
+class GpsPositionManager(context: Context): LocationListener {
     data class GpsPosition(var lat: Double, var lng: Double)
 
     companion object {
@@ -24,23 +25,28 @@ class GpsPositionManager(context: Context) {
         fun get(): GpsPosition = instance.lastPosition
     }
 
-    private var locationManager : LocationManager? = null
+    private var locationManager : LocationManager? = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
     private var lastPosition: GpsPosition = GpsPosition(0.0, 0.0)
 
     init {
-        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-        //locationManager.register
+        try {
+            locationManager!!.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                1000,
+                1f,
+                this
+            )
+        } catch (ex: SecurityException) {
+            // Handle security exception
+        }
     }
 
-    private val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            lastPosition.lng = location.longitude
-            lastPosition.lat = location.latitude
-        }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
+    override fun onLocationChanged(location: Location) {
+        Log.d("TIMER_GPS_LOC", "location changed")
+        lastPosition.lng = location.longitude
+        lastPosition.lat = location.latitude
     }
+
     fun onPause() {
         // sensorManager.unregisterListener(this)
     }
