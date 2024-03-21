@@ -66,7 +66,7 @@ class DevicePositionManager(context: Context) : SensorEventListener {
             lastPosition.gyrZ = event.values[2].toDouble()
         }
 
-        // TODO
+        // TODO - now just sends data to local python server
         Log.d("SENSOR", lastPosition.toString())
         var jsonObject = JSONObject()
         try {

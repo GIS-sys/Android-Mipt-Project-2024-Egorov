@@ -17,15 +17,20 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private lateinit var buttonSwitchInnerFragment: Button
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("DEBUGMAIN", "onViewCreated")
+        // load state
         if (savedInstanceState != null) {
-            Log.d("DEBUGMAIN", savedInstanceState.getLong(KEY_FRAGMENT_INDEX).toString())
+            fragmentIndex = savedInstanceState.getLong(KEY_FRAGMENT_INDEX)
         }
+        if (fragmentIndex != (-1).toLong()) {
+            fragmentIndex -= 1
+        }
+        // show fragment and register next changes
         buttonSwitchInnerFragment = view.findViewById<Button>(R.id.main_btn_switch_inner_fragment)
         cycleInnerFragment()
         buttonSwitchInnerFragment.setOnClickListener {
             cycleInnerFragment()
         }
+        // add onclicks
         view.findViewById<Button>(R.id.main_btn_go_to_settings).setOnClickListener {
             parentFragmentManager.commit {
                 setReorderingAllowed(true)
@@ -44,16 +49,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("DEBUGMAIN", "onSaveInstanceState")
         outState.putLong(KEY_FRAGMENT_INDEX, fragmentIndex)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        Log.d("DEBUGMAIN", "onViewStateRestored")
-        if (savedInstanceState != null) {
-            Log.d("DEBUGMAIN", savedInstanceState.getLong(KEY_FRAGMENT_INDEX).toString())
-        }
     }
 
     private fun cycleInnerFragment() {
