@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MIPT_2024</string>
+    <string name="greeting_description">This application will help you to locate the Moon location</string>
 </resources>
