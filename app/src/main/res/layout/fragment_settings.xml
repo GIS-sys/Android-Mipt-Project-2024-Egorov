@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="@dimen/btn_small_padding_x"
-    android:paddingEnd="@dimen/btn_small_padding_y"
-    android:orientation="vertical" >
+    android:paddingEnd="@dimen/btn_small_padding_x"
+    android:paddingBottom="@dimen/btn_small_padding_y"
+    android:orientation="vertical"
+    android:background="@color/color_background">
 
     <LinearLayout
         android:layout_width="match_parent"
