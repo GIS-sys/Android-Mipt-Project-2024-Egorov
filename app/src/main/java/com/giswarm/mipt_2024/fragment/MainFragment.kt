@@ -14,14 +14,16 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private var fragmentIndex: Long = -1
+    private lateinit var buttonSwitchInnerFragment: Button
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("DEBUGMAIN", "onViewCreated")
         if (savedInstanceState != null) {
             Log.d("DEBUGMAIN", savedInstanceState.getLong(KEY_FRAGMENT_INDEX).toString())
         }
+        buttonSwitchInnerFragment = view.findViewById<Button>(R.id.main_btn_switch_inner_fragment)
         cycleInnerFragment()
-        view.findViewById<Button>(R.id.main_btn_switch_inner_fragment).setOnClickListener {
+        buttonSwitchInnerFragment.setOnClickListener {
             cycleInnerFragment()
         }
         view.findViewById<Button>(R.id.main_btn_go_to_settings).setOnClickListener {
@@ -56,6 +58,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun cycleInnerFragment() {
         fragmentIndex = (fragmentIndex + 1) % 2
+        buttonSwitchInnerFragment.text = when(fragmentIndex) {
+            0.toLong() -> getString(R.string.change_view_image)
+            1.toLong() -> getString(R.string.change_view_text)
+            else -> TODO()
+        }
         childFragmentManager.commit {
             setReorderingAllowed(true)
             replace(
