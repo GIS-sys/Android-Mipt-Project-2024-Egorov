@@ -20,10 +20,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/btn_small_padding_x"
         android:layout_marginEnd="@dimen/btn_small_padding_x"
         android:layout_marginTop="@dimen/btn_small_padding_y"
@@ -31,7 +31,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/button_ripple"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:gravity="center"
             android:textColor="@color/main_text_color"
             android:textSize="@dimen/text_small"
@@ -39,14 +39,15 @@
             android:paddingEnd="@dimen/btn_small_padding_x"
             android:paddingTop="@dimen/btn_small_padding_y"
             android:paddingBottom="@dimen/btn_small_padding_y"
-            android:layout_marginEnd="@dimen/btn_small_padding_x"
+            android:layout_marginBottom="@dimen/btn_small_padding_y"
             android:layout_height="wrap_content"
             android:id="@+id/main_btn_switch_inner_fragment"
+            android:layout_weight="1"
             android:text="@string/change_view_text"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/button_ripple"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:gravity="center"
             android:textColor="@color/main_text_color"
             android:textSize="@dimen/text_small"
@@ -54,14 +55,15 @@
             android:paddingEnd="@dimen/btn_small_padding_x"
             android:paddingTop="@dimen/btn_small_padding_y"
             android:paddingBottom="@dimen/btn_small_padding_y"
-            android:layout_marginEnd="@dimen/btn_small_padding_x"
+            android:layout_marginBottom="@dimen/btn_small_padding_y"
             android:layout_height="wrap_content"
             android:id="@+id/main_btn_go_to_settings"
+            android:layout_weight="1"
             android:text="@string/settings" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:background="@drawable/button_ripple"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:gravity="center"
             android:textColor="@color/main_text_color"
             android:textSize="@dimen/text_small"
@@ -71,6 +73,7 @@
             android:paddingBottom="@dimen/btn_small_padding_y"
             android:layout_height="wrap_content"
             android:id="@+id/main_btn_go_to_credentials"
+            android:layout_weight="1"
             android:text="@string/credentials" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
