@@ -73,18 +73,18 @@ class DevicePositionManager(context: Context) : SensorEventListener {
             jsonObject.put("ax", "${lastPosition.accX}")
             jsonObject.put("ay", "${lastPosition.accY}")
             jsonObject.put("az", "${lastPosition.accZ}")
+            jsonObject.put("gx", "${lastPosition.gyrX}")
+            jsonObject.put("gy", "${lastPosition.gyrY}")
+            jsonObject.put("gz", "${lastPosition.gyrZ}")
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-
         val mediaType = "application/json; charset=utf-8".toMediaType()
         val body = jsonObject.toString().toRequestBody(mediaType)
         val request: Request = Request.Builder()
             .url("http://192.168.1.18:8080/new_data")
-            //.url("http://postman-echo.com/post")
             .post(body)
             .build()
-
         try {
             val client = OkHttpClient()
             client.newCall(request).enqueue(object : Callback {
