@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingStart="@dimen/btn_small_padding_x"
+    android:paddingEnd="@dimen/btn_small_padding_y"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -54,9 +54,18 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="top" />
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_gravity="end"
+        android:background="@drawable/button_ripple"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/main_text_color"
+        android:textSize="@dimen/text_small"
+        android:paddingStart="@dimen/btn_small_padding_x"
+        android:paddingEnd="@dimen/btn_small_padding_x"
+        android:paddingTop="@dimen/btn_small_padding_y"
+        android:paddingBottom="@dimen/btn_small_padding_y"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_btn_save"
         android:text="@string/save" />
 </LinearLayout>
