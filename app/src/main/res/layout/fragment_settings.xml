@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_weight="0.8"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:textSize="16sp"
             android:id="@+id/image_shape_spinner" />
     </LinearLayout>
@@ -52,11 +53,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="top"
-        android:hint="string/message" />
+        android:gravity="top" />
     <Button
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="string/send" />
+        android:text="@string/save" />
 </LinearLayout>
