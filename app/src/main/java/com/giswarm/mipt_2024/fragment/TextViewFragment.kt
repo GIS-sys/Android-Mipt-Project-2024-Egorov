@@ -27,7 +27,6 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
                 handler.postDelayed(this, 20);
             }
         }
-        handler.post(updater)
     }
 
     override fun onPause() {

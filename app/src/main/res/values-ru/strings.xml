@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Поиск Луны</string>
+    <string name="greeting_description">Данное приложение поможет Вам определять текущее положение Луны в любое время</string>
+    <string name="get_started">Давайте искать!</string>
+    <string name="welcome_to_our_app">Спасибо за скачивание нашего приложения!</string>
+    <string name="settings_display_label">Показывать текст поверх Луны</string>
+    <string name="settings_display_image_shape">Показывать Луну как</string>
+    <string name="accelerometer">Аккселерометр</string>
+    <string name="gyroscope">Гироскоп</string>
+    <string name="gps">Геолокация</string>
+    <string name="credentials_text">
+        Проект создан для: МФТИ,
+        Автор проекта: Егоров Гордей
+    </string>
+    <string name="save">Сохранить</string>
+    <string name="change_view_text">ТЕКСТ</string>
+    <string name="change_view_image">ВИЗУАЛ</string>
+    <string name="settings">Опции</string>
+    <string name="credentials">Авторы</string>
+    <string name="placeholder_short">Lorem ipsum</string>
+</resources>
