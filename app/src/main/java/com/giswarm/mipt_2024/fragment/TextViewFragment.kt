@@ -12,11 +12,11 @@ import com.giswarm.mipt_2024.position.GpsPositionManager
 
 class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private val handler: Handler = Handler()
+    private lateinit var updater: Runnable
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val updater: Runnable = object : Runnable {
+        updater = object : Runnable {
             @SuppressLint("SetTextI18n")
             override fun run() {
                 val devPos = DevicePositionManager.get()
@@ -27,6 +27,16 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
                 handler.postDelayed(this, 20);
             }
         }
+        handler.post(updater)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacksAndMessages(null)
+    }
+
+    override fun onResume() {
+        super.onResume()
         handler.post(updater)
     }
 }
