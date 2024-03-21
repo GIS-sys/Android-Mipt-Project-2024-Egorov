@@ -1,4 +1,15 @@
 <resources>
-    <string name="app_name">MIPT_2024</string>
+    <string name="app_name">Moon Tracker</string>
     <string name="greeting_description">This application will help you to locate the Moon location</string>
+    <string name="get_started">Get Started</string>
+    <string name="welcome_to_our_app">Welcome to Our App</string>
+    <string name="settings_display_label">Display text on top of moon</string>
+    <string name="settings_display_image_shape">Show moon as shape</string>
+    <string name="accelerometer">Accelerometer</string>
+    <string name="gyroscope">Gyroscope</string>
+    <string name="gps">GPS</string>
+    <string name="credentials">
+        Project created for: MIPT
+        Project created by: Egorov Gordei
+    </string>
 </resources>
