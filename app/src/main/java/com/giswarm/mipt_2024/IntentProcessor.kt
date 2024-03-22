@@ -20,8 +20,14 @@ object IntentProcessor {
                     actionsTransitionsList.add("main")
                     actionsTransitionsList.add("visual")
                 }
-                "credentials" -> actionsTransitionsList.add("credentials")
-                "configuration" -> actionsTransitionsList.add("configuration")
+                "credentials" -> {
+                    actionsTransitionsList.add("main")
+                    actionsTransitionsList.add("credentials")
+                }
+                "settings" -> {
+                    actionsTransitionsList.add("main")
+                    actionsTransitionsList.add("settings")
+                }
             }
         }
     }

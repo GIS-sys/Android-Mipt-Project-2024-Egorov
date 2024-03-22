@@ -48,7 +48,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="configuration" android:scheme="com.giswarm.mipt_2024" />
+                <data android:host="settings" android:scheme="com.giswarm.mipt_2024" />
             </intent-filter>
         </activity>
     </application>
