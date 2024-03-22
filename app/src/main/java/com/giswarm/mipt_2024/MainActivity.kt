@@ -1,8 +1,11 @@
 package com.giswarm.mipt_2024
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.SensorManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -15,6 +18,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.root_layout)
+
+        // DEBUG just for testing intents
+        if (intent.data?.scheme.isNullOrBlank() && intent.data?.host.isNullOrBlank()) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            // intent.data = Uri.parse("com.giswarm.mipt_2024://main.text")
+            // intent.data = Uri.parse("com.giswarm.mipt_2024://main.visual")
+            // intent.data = Uri.parse("com.giswarm.mipt_2024://credentials")
+            intent.data = Uri.parse("com.giswarm.mipt_2024://configuration")
+            // intent.data = Uri.parse("com.giswarm.mipt_2024://NOTEXISTS")
+            startActivity(intent)
+            return;
+        }
+
+        IntentProcessor.process(intent)
 
         DevicePositionManager.instantiate(this)
         GpsPositionManager.instantiate(this)

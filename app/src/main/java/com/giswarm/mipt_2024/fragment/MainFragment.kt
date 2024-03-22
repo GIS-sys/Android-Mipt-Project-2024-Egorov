@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import com.giswarm.mipt_2024.IntentProcessor
 import com.giswarm.mipt_2024.R
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -17,6 +18,26 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private lateinit var buttonSwitchInnerFragment: Button
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (IntentProcessor.actionsTransitionsList.isNotEmpty()) {
+            when (IntentProcessor.actionsTransitionsList[0]) {
+                "text" -> {
+                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    fragmentIndex = 0
+                }
+                "visual" -> {
+                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    fragmentIndex = 1
+                }
+                "settings" -> {
+                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    moveToSettings()
+                }
+                "credentials" -> {
+                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    moveToCredentials()
+                }
+            }
+        }
         // load state
         if (savedInstanceState != null) {
             fragmentIndex = savedInstanceState.getLong(KEY_FRAGMENT_INDEX)
@@ -32,24 +53,32 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
         // add onclicks
         view.findViewById<Button>(R.id.main_btn_go_to_settings).setOnClickListener {
-            parentFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace(R.id.root_fragment_container_view, SettingsFragment())
-                addToBackStack(null)
-            }
+            moveToSettings()
         }
         view.findViewById<Button>(R.id.main_btn_go_to_credentials).setOnClickListener {
-            parentFragmentManager.commit {
-                setReorderingAllowed(true)
-                replace(R.id.root_fragment_container_view, CredentialsFragment())
-                addToBackStack(null)
-            }
+            moveToCredentials()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong(KEY_FRAGMENT_INDEX, fragmentIndex)
+    }
+
+    private fun moveToSettings() {
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.root_fragment_container_view, SettingsFragment())
+            addToBackStack(null)
+        }
+    }
+
+    private fun moveToCredentials() {
+        parentFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.root_fragment_container_view, CredentialsFragment())
+            addToBackStack(null)
+        }
     }
 
     private fun cycleInnerFragment() {
