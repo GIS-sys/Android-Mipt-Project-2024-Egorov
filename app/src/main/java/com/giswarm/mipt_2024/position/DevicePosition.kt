@@ -65,42 +65,6 @@ class DevicePositionManager(context: Context) : SensorEventListener {
             lastPosition.gyrY = event.values[1].toDouble()
             lastPosition.gyrZ = event.values[2].toDouble()
         }
-
-        // TODO - now just sends data to local python server
-        Log.d("SENSOR", lastPosition.toString())
-        var jsonObject = JSONObject()
-        try {
-            jsonObject.put("ax", "${lastPosition.accX}")
-            jsonObject.put("ay", "${lastPosition.accY}")
-            jsonObject.put("az", "${lastPosition.accZ}")
-            jsonObject.put("gx", "${lastPosition.gyrX}")
-            jsonObject.put("gy", "${lastPosition.gyrY}")
-            jsonObject.put("gz", "${lastPosition.gyrZ}")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        val mediaType = "application/json; charset=utf-8".toMediaType()
-        val body = jsonObject.toString().toRequestBody(mediaType)
-        val request: Request = Request.Builder()
-            .url("http://192.168.1.18:8080/new_data")
-            .post(body)
-            .build()
-        try {
-            val client = OkHttpClient()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    e.printStackTrace()
-                    Log.d("SENSORNET", "exception $e")
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    if (!response.isSuccessful) Log.d("SENSORNET", "Unexpected code $response")
-                    else Log.e("SENSORNET", response.body!!.string())
-                }
-            })
-        } catch (e: Exception) {
-            Log.e("SENSORNET", e.toString())
-        }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
