@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.root_layout)
 
         // DEBUG just for testing intents
-        if (intent.data?.scheme.isNullOrBlank() && intent.data?.host.isNullOrBlank()) {
+        /*if (intent.data?.scheme.isNullOrBlank() && intent.data?.host.isNullOrBlank()) {
             val intent = Intent(Intent.ACTION_VIEW)
             // intent.data = Uri.parse("com.giswarm.mipt_2024://main.text")
             // intent.data = Uri.parse("com.giswarm.mipt_2024://main.visual")
@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
             // intent.data = Uri.parse("com.giswarm.mipt_2024://NOTEXISTS")
             startActivity(intent)
             return;
-        }
+        }*/
+        // OR use "deeplink tester" app in google play to test this
 
         IntentProcessor.process(intent)
 
