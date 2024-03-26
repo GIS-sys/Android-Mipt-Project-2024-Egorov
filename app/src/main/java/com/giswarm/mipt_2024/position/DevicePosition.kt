@@ -75,5 +75,6 @@ class DevicePositionManager(context: Context) : SensorEventListener {
 
     fun onResume() {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_UI)
     }
 }
