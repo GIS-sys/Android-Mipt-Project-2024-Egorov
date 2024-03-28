@@ -26,6 +26,8 @@ This project aims to help you locate the Moon by using your phone
 
 - position/ - singletones for 1) determining GPS location, 2) acquiing accelerometer/gyroscope data for device position, 3) requesting Moon position from website
 
+### fragments
+
 The order of showing fragments:
 
 <pre>
@@ -35,3 +37,11 @@ The order of showing fragments:
          /                                                              \
 SettingsFragment.kt                                             CredentialsFragment.kt
 </pre>
+
+- GreetingsFragment.kt - simple greeting screen, is shown only once
+
+- MainFragment.kt - container for either TextViewFragment.kt or VisualViewFragment.kt. Responsible for displaying GPS/gyro/etc - either in text format or as image
+
+- SettingsFragment.kt - allows customization of app
+
+- CredentialsFragment.kt - credentials
