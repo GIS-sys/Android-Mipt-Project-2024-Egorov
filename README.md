@@ -29,7 +29,9 @@ This project aims to help you locate the Moon by using your phone
 The order of showing fragments:
 
 <pre>
-                                                                                 SettingsFragment.kt
-GreetingsFragment.kt   ---                MainFragment.kt                    --<
-                             (TextViewFragment.kt / VisualViewFragment.kt)       CredentialsFragment.kt
+                            GreetingsFragment.kt
+                                      |
+      MainFragment.kt (inside: TextViewFragment.kt or VisualViewFragment.kt)
+         /                                                              \
+SettingsFragment.kt                                             CredentialsFragment.kt
 </pre>
