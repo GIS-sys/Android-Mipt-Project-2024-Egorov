@@ -9,7 +9,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import com.giswarm.mipt_2024.fragment.CredentialsFragment
 import com.giswarm.mipt_2024.fragment.GreetingsFragment
+import com.giswarm.mipt_2024.fragment.MainFragment
+import com.giswarm.mipt_2024.fragment.SettingsFragment
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.GpsPositionManager
 
@@ -42,6 +45,29 @@ class MainActivity : AppCompatActivity() {
                 setReorderingAllowed(true)
                 add(R.id.root_fragment_container_view, GreetingsFragment())
             }
+        }
+    }
+
+    fun moveToMain() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.root_fragment_container_view, MainFragment())
+        }
+    }
+
+    fun moveToCredentials() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.root_fragment_container_view, CredentialsFragment())
+            addToBackStack(null)
+        }
+    }
+
+    fun moveToSettings() {
+        supportFragmentManager.commit {
+            setReorderingAllowed(true)
+            replace(R.id.root_fragment_container_view, SettingsFragment())
+            addToBackStack(null)
         }
     }
 

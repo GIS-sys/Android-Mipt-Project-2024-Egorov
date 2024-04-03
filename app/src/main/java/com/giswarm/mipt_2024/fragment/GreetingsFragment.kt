@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.giswarm.mipt_2024.IntentProcessor
+import com.giswarm.mipt_2024.MainActivity
 import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.GpsPositionManager
@@ -33,9 +34,6 @@ class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
 
     private fun moveToMain() {
         requireActivity().getSharedPreferences(PREFERENCES_NAME,  Context.MODE_PRIVATE).edit().putBoolean(PREFERENCES_ALREADY_SHOWN, true).apply()
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace(R.id.root_fragment_container_view, MainFragment())
-        }
+        (activity as MainActivity).moveToMain()
     }
 }

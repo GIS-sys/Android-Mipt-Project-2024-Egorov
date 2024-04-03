@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.giswarm.mipt_2024.IntentProcessor
+import com.giswarm.mipt_2024.MainActivity
 import com.giswarm.mipt_2024.R
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -66,19 +67,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun moveToSettings() {
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace(R.id.root_fragment_container_view, SettingsFragment())
-            addToBackStack(null)
-        }
+        (activity as MainActivity).moveToSettings()
     }
 
     private fun moveToCredentials() {
-        parentFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace(R.id.root_fragment_container_view, CredentialsFragment())
-            addToBackStack(null)
-        }
+        (activity as MainActivity).moveToCredentials()
     }
 
     private fun cycleInnerFragment() {
