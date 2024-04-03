@@ -23,19 +23,19 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         if (IntentProcessor.actionsTransitionsList.isNotEmpty()) {
             when (IntentProcessor.actionsTransitionsList.first()) {
                 IntentTargets.TEXT -> {
-                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    IntentProcessor.actionsTransitionsList.removeFirst()
                     fragmentIndex = 0
                 }
                 IntentTargets.VISUAL -> {
-                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    IntentProcessor.actionsTransitionsList.removeFirst()
                     fragmentIndex = 1
                 }
                 IntentTargets.SETTINGS -> {
-                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    IntentProcessor.actionsTransitionsList.removeFirst()
                     moveToSettings()
                 }
                 IntentTargets.CREDENTIALS -> {
-                    IntentProcessor.actionsTransitionsList.removeAt(0)
+                    IntentProcessor.actionsTransitionsList.removeFirst()
                     moveToCredentials()
                 }
                 else -> Log.e("MainFragment", "Cannot move to specified intent")

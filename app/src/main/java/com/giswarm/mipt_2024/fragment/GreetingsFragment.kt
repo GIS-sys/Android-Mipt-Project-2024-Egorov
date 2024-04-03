@@ -22,7 +22,7 @@ class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (IntentProcessor.actionsTransitionsList.isNotEmpty() && IntentProcessor.actionsTransitionsList.first() == IntentTargets.MAIN) {
-            IntentProcessor.actionsTransitionsList.removeAt(0)
+            IntentProcessor.actionsTransitionsList.removeFirst()
             moveToMain()
         }
         if (requireActivity().getSharedPreferences(PREFERENCES_NAME,  Context.MODE_PRIVATE).getBoolean(PREFERENCES_ALREADY_SHOWN, false)) {
