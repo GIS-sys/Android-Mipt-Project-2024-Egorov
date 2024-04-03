@@ -1,4 +1,10 @@
 <resources>
+    <string name="scheme" translatable="false">com.giswarm.mipt_2024</string>
+    <string name="intent_main_text" translatable="false">main.text</string>
+    <string name="intent_main_visual" translatable="false">main.visual</string>
+    <string name="intent_credentials" translatable="false">credentials</string>
+    <string name="intent_settings" translatable="false">settings</string>
+
     <string name="app_name">Moon Tracker</string>
     <string name="greeting_description">This application will help you to locate the Moon location</string>
     <string name="get_started">Get Started</string>

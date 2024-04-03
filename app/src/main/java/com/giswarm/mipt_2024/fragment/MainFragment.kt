@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.giswarm.mipt_2024.IntentProcessor
+import com.giswarm.mipt_2024.IntentTargets
 import com.giswarm.mipt_2024.MainActivity
 import com.giswarm.mipt_2024.R
 
@@ -20,23 +21,24 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (IntentProcessor.actionsTransitionsList.isNotEmpty()) {
-            when (IntentProcessor.actionsTransitionsList[0]) {
-                "text" -> {
+            when (IntentProcessor.actionsTransitionsList.first()) {
+                IntentTargets.TEXT -> {
                     IntentProcessor.actionsTransitionsList.removeAt(0)
                     fragmentIndex = 0
                 }
-                "visual" -> {
+                IntentTargets.VISUAL -> {
                     IntentProcessor.actionsTransitionsList.removeAt(0)
                     fragmentIndex = 1
                 }
-                "settings" -> {
+                IntentTargets.SETTINGS -> {
                     IntentProcessor.actionsTransitionsList.removeAt(0)
                     moveToSettings()
                 }
-                "credentials" -> {
+                IntentTargets.CREDENTIALS -> {
                     IntentProcessor.actionsTransitionsList.removeAt(0)
                     moveToCredentials()
                 }
+                else -> Log.e("MainFragment", "Cannot move to specified intent")
             }
         }
         // load state

@@ -30,25 +30,25 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="main.text" android:scheme="com.giswarm.mipt_2024" />
+                <data android:host="@string/intent_main_text" android:scheme="@string/scheme" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="main.visual" android:scheme="com.giswarm.mipt_2024" />
+                <data android:host="@string/intent_main_visual" android:scheme="@string/scheme" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="credentials" android:scheme="com.giswarm.mipt_2024" />
+                <data android:host="@string/intent_credentials" android:scheme="@string/scheme" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="settings" android:scheme="com.giswarm.mipt_2024" />
+                <data android:host="@string/intent_settings" android:scheme="@string/scheme" />
             </intent-filter>
         </activity>
     </application>

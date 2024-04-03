@@ -1,32 +1,37 @@
 package com.giswarm.mipt_2024
 
+import android.content.Context
 import android.content.Intent
-import android.util.Log
+import androidx.core.content.ContextCompat.getString
+
+enum class IntentTargets {
+    MAIN, TEXT, VISUAL, CREDENTIALS, SETTINGS
+}
 
 object IntentProcessor {
-    val actionsTransitionsList = ArrayList<String>()
+    val actionsTransitionsList = ArrayDeque<IntentTargets>()
 
-    fun process(intent: Intent) {
+    fun process(context: Context, intent: Intent) {
         if (intent.data?.scheme.isNullOrBlank() && intent.data?.host.isNullOrBlank()) {
             return
         }
-        if (intent.data?.scheme == "com.giswarm.mipt_2024") {
+        if (intent.data?.scheme ==  getString(context, R.string.scheme)) {
             when (intent.data?.host) {
-                "main.text" -> {
-                    actionsTransitionsList.add("main")
-                    actionsTransitionsList.add("text")
+                getString(context, R.string.intent_main_text) -> {
+                    actionsTransitionsList.addLast(IntentTargets.MAIN)
+                    actionsTransitionsList.addLast(IntentTargets.TEXT)
                 }
-                "main.visual" -> {
-                    actionsTransitionsList.add("main")
-                    actionsTransitionsList.add("visual")
+                getString(context, R.string.intent_main_visual) -> {
+                    actionsTransitionsList.addLast(IntentTargets.MAIN)
+                    actionsTransitionsList.addLast(IntentTargets.VISUAL)
                 }
-                "credentials" -> {
-                    actionsTransitionsList.add("main")
-                    actionsTransitionsList.add("credentials")
+                getString(context, R.string.intent_credentials) -> {
+                    actionsTransitionsList.addLast(IntentTargets.MAIN)
+                    actionsTransitionsList.addLast(IntentTargets.CREDENTIALS)
                 }
-                "settings" -> {
-                    actionsTransitionsList.add("main")
-                    actionsTransitionsList.add("settings")
+                getString(context, R.string.intent_settings)-> {
+                    actionsTransitionsList.addLast(IntentTargets.MAIN)
+                    actionsTransitionsList.addLast(IntentTargets.SETTINGS)
                 }
             }
         }

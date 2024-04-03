@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.giswarm.mipt_2024.IntentProcessor
+import com.giswarm.mipt_2024.IntentTargets
 import com.giswarm.mipt_2024.MainActivity
 import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.position.DevicePositionManager
@@ -20,7 +21,7 @@ const val PREFERENCES_ALREADY_SHOWN = "GREETINGS_ALREADY_SHOWN"
 class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (IntentProcessor.actionsTransitionsList.isNotEmpty() && IntentProcessor.actionsTransitionsList[0] == "main") {
+        if (IntentProcessor.actionsTransitionsList.isNotEmpty() && IntentProcessor.actionsTransitionsList.first() == IntentTargets.MAIN) {
             IntentProcessor.actionsTransitionsList.removeAt(0)
             moveToMain()
         }

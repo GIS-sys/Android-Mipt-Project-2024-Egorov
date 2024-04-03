@@ -143,15 +143,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
             val intent = Intent(Intent.ACTION_VIEW)
             // intent.data = Uri.parse("com.giswarm.mipt_2024://main.text")
             // intent.data = Uri.parse("com.giswarm.mipt_2024://main.visual")
-            //intent.data = Uri.parse("com.giswarm.mipt_2024://credentials")
-            intent.data = Uri.parse("com.giswarm.mipt_2024://settings")
+            intent.data = Uri.parse("com.giswarm.mipt_2024://credentials")
+            // intent.data = Uri.parse("com.giswarm.mipt_2024://settings")
             // intent.data = Uri.parse("com.giswarm.mipt_2024://NOTEXISTS")
             startActivity(intent)
             return;
         }*/
         // OR use "deeplink tester" app in google play to test this
 
-        IntentProcessor.process(intent)
+        IntentProcessor.process(this, intent)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
