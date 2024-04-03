@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.giswarm.mipt_2024.position.DevicePosition
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import okhttp3.Call
 import okhttp3.Callback
@@ -28,7 +29,7 @@ import java.io.IOException
 
 class DebugSendData {
     companion object {
-        fun send(lastDevicePosition: DevicePositionManager.DevicePosition, ip: String) {
+        fun send(lastDevicePosition: DevicePosition, ip: String) {
             Log.d("SENSOR", lastDevicePosition.toString())
             var jsonObject = JSONObject()
             try {

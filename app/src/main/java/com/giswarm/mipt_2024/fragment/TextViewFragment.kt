@@ -33,10 +33,10 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
         updater = object : Runnable {
             @SuppressLint("SetTextI18n")
             override fun run() {
-                val devPos = DevicePositionManager.get()
+                val devPos = (activity as DevicePositionManager).getDevicePosition()
                 textAcc.text = "${getString(R.string.accelerometer)} ${devPos.accX} ${devPos.accY} ${devPos.accZ}"
                 textGyr.text = "${getString(R.string.gyroscope)} ${devPos.gyrX} ${devPos.gyrY} ${devPos.gyrZ}"
-                val gpsPos = GpsPositionManager.get()
+                val gpsPos = (activity as GpsPositionManager).getGpsPosition()
                 textGps.text = "${getString(R.string.gps)} ${gpsPos.lat} ${gpsPos.lng}"
                 DebugSendData.send(devPos, debugIp.text.toString())
                 handler.postDelayed(this, 20);
