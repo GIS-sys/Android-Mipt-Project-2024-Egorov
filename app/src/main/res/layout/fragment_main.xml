@@ -19,7 +19,7 @@
             android:layout_width="match_parent"/>
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -41,6 +41,9 @@
             android:paddingBottom="@dimen/btn_small_padding_y"
             android:layout_marginEnd="@dimen/btn_small_padding_x"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/main_btn_go_to_settings"
             android:id="@+id/main_btn_switch_inner_fragment"
             android:text="@string/change_view_text"/>
 
@@ -56,6 +59,9 @@
             android:paddingBottom="@dimen/btn_small_padding_y"
             android:layout_marginEnd="@dimen/btn_small_padding_x"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/main_btn_switch_inner_fragment"
+            app:layout_constraintEnd_toStartOf="@id/main_btn_go_to_credentials"
             android:id="@+id/main_btn_go_to_settings"
             android:text="@string/settings" />
 
@@ -70,7 +76,11 @@
             android:paddingTop="@dimen/btn_small_padding_y"
             android:paddingBottom="@dimen/btn_small_padding_y"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/main_btn_go_to_settings"
+            app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/main_btn_go_to_credentials"
             android:text="@string/credentials" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
