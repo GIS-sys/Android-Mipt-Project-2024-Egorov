@@ -45,3 +45,19 @@ SettingsFragment.kt                                             CredentialsFragm
 - SettingsFragment.kt - allows customization of app
 
 - CredentialsFragment.kt - credentials
+
+## Screenshots
+
+For now it only displays GPS and device data. Real moon positioning and settings are not implemented yet.
+
+![gps_permission](ext/screenshots/gps_permission.png)
+
+![greetings_fragment](ext/screenshots/greetings_fragment.png)
+
+![main_fragment_text](ext/screenshots/main_fragment_text.png)
+
+![main_fragment_visual](ext/screenshots/main_fragment_visual.png)
+
+![credentials_fragment](ext/screenshots/credentials_fragment.png)
+
+![settings_fragment](ext/screenshots/settings_fragment.png)
