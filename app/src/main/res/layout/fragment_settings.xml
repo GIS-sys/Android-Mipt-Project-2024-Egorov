@@ -47,14 +47,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Spinner
-            android:entries="@array/options_image_shape"
+        <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/image_shape_recycler_view"
             android:layout_width="0dp"
             android:layout_weight="6"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:textSize="16sp"
-            android:id="@+id/image_shape_spinner" />
+            android:overScrollMode="never"/>
     </LinearLayout>
 
     <Space
