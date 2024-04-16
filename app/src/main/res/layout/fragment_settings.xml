@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/btn_small_padding_x"
+    android:paddingEnd="@dimen/btn_small_padding_x"
+    android:paddingBottom="@dimen/btn_small_padding_y"
+    android:orientation="vertical"
+    android:background="@color/color_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:text="@string/settings_display_label"
+            android:textSize="16sp"
+            android:layout_marginEnd="8dp" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:id="@+id/image_label_switch" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingTop="@dimen/btn_big_padding_y"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="@string/settings_display_image_shape"
+            android:textSize="16sp"
+            android:layout_marginEnd="8dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Spinner
+            android:entries="@array/options_image_shape"
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:textSize="16sp"
+            android:id="@+id/image_shape_spinner" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_gravity="end"
+        android:background="@drawable/button_ripple"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/main_text_color"
+        android:textSize="@dimen/text_small"
+        android:paddingStart="@dimen/btn_small_padding_x"
+        android:paddingEnd="@dimen/btn_small_padding_x"
+        android:paddingTop="@dimen/btn_small_padding_y"
+        android:paddingBottom="@dimen/btn_small_padding_y"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings_btn_save"
+        android:text="@string/save" />
+</LinearLayout>
