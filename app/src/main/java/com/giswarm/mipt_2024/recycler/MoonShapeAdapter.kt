@@ -1,21 +1,25 @@
 package com.giswarm.mipt_2024.recycler
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.giswarm.mipt_2024.R
 
 
-class MoonShapeAdapter(listener: MoonShapeDelegateAdapter.OnViewSelectedListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var items: ArrayList<ViewType>
+class MoonShapeAdapter(listener: MoonShapeDelegateAdapter.OnViewSelectedListener, recyclerView: RecyclerView) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var items: ArrayList<ViewType> = ArrayList()
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
     private val loadingItem = object : ViewType {
         override fun getViewType() = AdapterConstants.LOADING
     }
 
     init {
-        delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter { recyclerView.post {
+            Log.d("DEBUG_1704", "callback")
+            add(listOf(MoonShapeItem("Item X", R.drawable.mipt_android_icon)))
+        }})
         delegateAdapters.put(AdapterConstants.IMAGE_TEXT, MoonShapeDelegateAdapter(listener))
-        items = ArrayList()
         items.add(loadingItem)
     }
 
@@ -37,7 +41,7 @@ class MoonShapeAdapter(listener: MoonShapeDelegateAdapter.OnViewSelectedListener
         // add back
         items.addAll(newItems)
         items.add(loadingItem)
-        notifyItemRangeChanged(initPosition, items.size + 1)
+        notifyItemRangeChanged(initPosition, newItems.size + 1)
     }
 
     fun clear() {

@@ -78,7 +78,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             override fun onItemSelected(item: MoonShapeItem) {
                 Log.d("DEBUG_1604", item.text)
             }
-        })
+        }, imageShapeRecyclerView)
         imageShapeRecyclerViewAdapter.add(data)
         imageShapeRecyclerView.adapter = imageShapeRecyclerViewAdapter
 
