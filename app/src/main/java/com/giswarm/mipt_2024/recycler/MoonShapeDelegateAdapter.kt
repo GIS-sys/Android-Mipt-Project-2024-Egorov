@@ -27,7 +27,7 @@ class MoonShapeDelegateAdapter(val viewActions: OnViewSelectedListener) : ViewTy
         private val textView: TextView = itemView.findViewById(R.id.textView)
 
         fun bind(item: MoonShapeItem) {
-            imageView.setImageResource(item.image)
+            imageView.setImageDrawable(item.image)
             textView.text = item.text
             /*holder.itemView.setOnClickListener{
                 val lastSelected = selectedPos
