@@ -1,12 +1,9 @@
 package com.giswarm.mipt_2024.recycler
 
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Parcel
-import android.os.Parcelable
 
 
-data class MoonShapeItem(val text: String, val image: Drawable) : ViewType {
+open class RecyclerItemTextImage(val text: String, val image: Drawable) : ViewType {
     override fun getViewType() = AdapterConstants.IMAGE_TEXT
 }
 /*data class MoonShapeItem(

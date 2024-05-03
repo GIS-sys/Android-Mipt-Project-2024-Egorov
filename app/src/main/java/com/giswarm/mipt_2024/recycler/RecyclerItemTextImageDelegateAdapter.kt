@@ -6,9 +6,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.giswarm.mipt_2024.R
 
-class MoonShapeDelegateAdapter(val viewActions: OnViewSelectedListener) : ViewTypeDelegateAdapter {
+class RecyclerItemTextImageDelegateAdapter (val viewActions: OnViewSelectedListener) : ViewTypeDelegateAdapter {
     interface OnViewSelectedListener {
-        fun onItemSelected(item: MoonShapeItem)
+        fun onItemSelected(item: RecyclerItemTextImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
@@ -17,7 +17,7 @@ class MoonShapeDelegateAdapter(val viewActions: OnViewSelectedListener) : ViewTy
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as MoonShapeViewHolder
-        holder.bind(item as MoonShapeItem)
+        holder.bind(item as RecyclerItemTextImage)
     }
 
     inner class MoonShapeViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -26,7 +26,7 @@ class MoonShapeDelegateAdapter(val viewActions: OnViewSelectedListener) : ViewTy
         private val imageView: ImageView = itemView.findViewById(R.id.imageview)
         private val textView: TextView = itemView.findViewById(R.id.textView)
 
-        fun bind(item: MoonShapeItem) {
+        fun bind(item: RecyclerItemTextImage) {
             imageView.setImageDrawable(item.image)
             textView.text = item.text
             /*holder.itemView.setOnClickListener{

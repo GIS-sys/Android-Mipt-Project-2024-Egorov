@@ -1,29 +1,20 @@
 package com.giswarm.mipt_2024.fragment
 
-import android.app.Activity
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
-import androidx.compose.ui.graphics.Color
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.recycler.MoonShapeAdapter
-import com.giswarm.mipt_2024.recycler.MoonShapeDelegateAdapter
-import com.giswarm.mipt_2024.recycler.MoonShapeItem
+import com.giswarm.mipt_2024.recycler.RecyclerItemCircle
+import com.giswarm.mipt_2024.recycler.RecyclerItemSquare
+import com.giswarm.mipt_2024.recycler.RecyclerItemTextImageDelegateAdapter
+import com.giswarm.mipt_2024.recycler.RecyclerItemTextImage
+import com.giswarm.mipt_2024.recycler.ViewType
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
     /*data class ItemsViewModel(val image: Int, val text: String) {}
@@ -73,63 +64,24 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         imageLabelSwitch = view.findViewById(R.id.image_label_switch)
 
-        val data = ArrayList<MoonShapeItem>()
-        for (i in 1..20) {
-            /*data.add(MoonShapeItem(
-                "Item " + i,
-                Glide.with(requireActivity()).asDrawable()
-                    .placeholder(R.drawable.mipt_android_icon)
-                    .error(R.drawable.mipt_android_icon)
-                    .load("https://goo.gl/gEgYUd")
-                    .listener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: Target<Drawable>?, p3: Boolean): Boolean {
-                            Log.e("DEBUG_1704", "onLoadFailed")
-                            //do something if error loading
-                            return false
-                        }
-                        override fun onResourceReady(p0: Drawable?, p1: Any?, p2: Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
-                            Log.d("DEBUG_1704", "OnResourceReady")
-                            //do something when picture already loaded
-                            return false
-                        }
-                    }).
-            ))*/
-        }
-
         imageShapeRecyclerView = view.findViewById(R.id.image_shape_recycler_view)
         imageShapeRecyclerView.layoutManager = LinearLayoutManager(activity)
-        imageShapeRecyclerViewAdapter = MoonShapeAdapter(object : MoonShapeDelegateAdapter.OnViewSelectedListener {
-            override fun onItemSelected(item: MoonShapeItem) {
-                Log.d("DEBUG_1604", item.text)
-            }
-        }, imageShapeRecyclerView, requireActivity())
-        imageShapeRecyclerViewAdapter.add(data)
+        imageShapeRecyclerViewAdapter = MoonShapeAdapter(
+            object : RecyclerItemTextImageDelegateAdapter.OnViewSelectedListener {
+                override fun onItemSelected(item: RecyclerItemTextImage) {
+                    when (item) {
+                        is RecyclerItemTextImage -> Log.d("DEBUG_1604", item.text)
+                        else -> Log.d("DEBUG_1604", "item")
+                    }
+                }
+            },
+            imageShapeRecyclerView,
+            requireActivity(),
+            listOf(RecyclerItemCircle(requireContext()), RecyclerItemSquare(requireContext())))
         imageShapeRecyclerView.adapter = imageShapeRecyclerViewAdapter
-
-        for (i in 1..20) {
-            Glide.with(requireActivity()).asDrawable()
-                .placeholder(R.drawable.mipt_android_icon)
-                .error(R.drawable.mipt_android_icon)
-                .load("https://goo.gl/gEgYUd")
-                .listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: Boolean): Boolean {
-                        Log.e("DEBUG_1704", "onLoadFailed")
-                        //do something if error loading
-                        return true
-                    }
-                    override fun onResourceReady(p0: Drawable?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
-                        Log.d("DEBUG_1704", "OnResourceReady")
-                        //do something when picture already loaded
-                        imageShapeRecyclerViewAdapter.add(listOf(MoonShapeItem("Item " + i, p0!!)))
-                        return true
-                    }
-                }).submit()
-        }
 
         Log.d("DEBUG_SAVEINSTANCE", "onViewCreated")
         if (savedInstanceState != null) {
-            Log.d("DEBUG_SAVEINSTANCE", savedInstanceState.getBoolean(KEY_LABEL_SWITCH).toString())
-            Log.d("DEBUG_SAVEINSTANCE", savedInstanceState.getInt(KEY_SHAPE_SPINNER).toString())
             imageLabelSwitch.isChecked = savedInstanceState.getBoolean(KEY_LABEL_SWITCH)
             //imageShapeRecyclerViewAdapter.selectedPos = savedInstanceState.getInt(KEY_SHAPE_SPINNER)
         }
@@ -142,7 +94,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.d("DEBUG_SAVEINSTANCE2", imageLabelSwitch.isChecked.toString())
-        //Log.d("DEBUG_SAVEINSTANCE2", imageShapeRecyclerViewAdapter.selectedPos.toString())
         outState.putBoolean(KEY_LABEL_SWITCH, imageLabelSwitch.isChecked)
         //outState.putInt(KEY_SHAPE_SPINNER, imageShapeRecyclerViewAdapter.selectedPos)
     }
