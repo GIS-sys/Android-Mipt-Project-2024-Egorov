@@ -12,6 +12,7 @@
     <string name="only_text">Только текст</string>
     <string name="circle">Круг</string>
     <string name="square">Квадрат</string>
+    <string name="saved">Сохранено</string>
     <string name="credentials_text">
         Проект создан для: МФТИ,
         Автор проекта: Егоров Гордей

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.giswarm.mipt_2024.recycler.RecyclerItemTextImageDelegateAdapter
 import com.giswarm.mipt_2024.recycler.RecyclerItemTextImage
 import com.giswarm.mipt_2024.recycler.ViewType
 import com.giswarm.mipt_2024.recycler.ViewTypeDelegateAdapter
+import java.time.Duration
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
     companion object {
@@ -57,7 +59,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
 
         view.findViewById<Button>(R.id.settings_btn_save).setOnClickListener {
-            requireActivity().onBackPressed()
+            Toast.makeText(context, getString(R.string.saved), Toast.LENGTH_SHORT).show()
+            // SAVE
         }
     }
 

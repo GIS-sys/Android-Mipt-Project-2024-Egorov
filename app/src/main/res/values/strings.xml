@@ -18,6 +18,7 @@
     <string name="only_text">Text only</string>
     <string name="circle">Circle</string>
     <string name="square">Square</string>
+    <string name="saved">Saved</string>
     <string name="credentials_text">
         Project created for: MIPT,
         Project created by: Egorov Gordei
