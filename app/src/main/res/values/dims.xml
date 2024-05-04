@@ -5,4 +5,5 @@
     <dimen name="btn_big_padding_y">48dp</dimen>
     <dimen name="text_small">16sp</dimen>
     <dimen name="text_medium">24sp</dimen>
+    <dimen name="text_large">36sp</dimen>
 </resources>

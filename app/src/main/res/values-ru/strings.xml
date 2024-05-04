@@ -23,4 +23,8 @@
     <string name="settings">Опции</string>
     <string name="credentials">Авторы</string>
     <string name="placeholder_short">Lorem ipsum</string>
+    <string name="chosen_payment_type">Выбранный тип оплаты: </string>
+    <string name="chosen_payment_type_buy">Покупка</string>
+    <string name="chosen_payment_type_subscribe">Подписка</string>
+    <string name="credentials_payment_text">Выберите тип оплаты [пока в разработке]</string>
 </resources>

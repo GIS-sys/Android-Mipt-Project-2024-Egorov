@@ -29,4 +29,8 @@
     <string name="settings">Settings</string>
     <string name="credentials">Creds</string>
     <string name="placeholder_short">Lorem ipsum</string>
+    <string name="chosen_payment_type">Chosen payment type: </string>
+    <string name="chosen_payment_type_buy">Purchase</string>
+    <string name="chosen_payment_type_subscribe">Subscription</string>
+    <string name="credentials_payment_text">Choose payment type [still under dev]</string>
 </resources>
