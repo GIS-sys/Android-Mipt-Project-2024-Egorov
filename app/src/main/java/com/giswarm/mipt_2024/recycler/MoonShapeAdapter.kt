@@ -30,7 +30,7 @@ private const val URL_IMAGE_DEFAULT = "grinning-face"
 class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener, private var recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: ArrayList<ViewType> = ArrayList(itemsnew)
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
-    private var selectedPosition: Int = 0
+    var selectedPosition: Int = 0
 
     // only single loading item allowed
     private val loadingItem = object : ViewType {

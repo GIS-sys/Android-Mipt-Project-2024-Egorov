@@ -13,7 +13,7 @@ class RecyclerItemTextDelegateAdapter (val viewActions: ViewTypeDelegateAdapter.
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType, isSelected: Boolean, position: Int) {
         holder as TextViewHolder
-        holder.bind(item as RecyclerItemText, isSelected, position) // TODO
+        holder.bind(item as RecyclerItemText, isSelected, position)
     }
 
     inner class TextViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -23,16 +23,11 @@ class RecyclerItemTextDelegateAdapter (val viewActions: ViewTypeDelegateAdapter.
 
         fun bind(item: RecyclerItemText, isSelected: Boolean, position: Int) {
             textView.text = item.text
-            /*holder.itemView.setOnClickListener{
-                val lastSelected = selectedPos
-                selectedPos = position
-                onClickListener.invoke(position)
-                notifyItemChanged(lastSelected)
-                notifyItemChanged(position)
-            }*/
-            //holder.itemView.setBackgroundColor(if (selectedPos == position) (0xff000000).toInt() else (0xff99cc11u).toInt())
 
-            super.itemView.setOnClickListener { viewActions.onItemSelected(item, position)}
+            super.itemView.setOnClickListener {
+                viewActions.onItemSelected(item, position)
+            }
+            super.itemView.setBackgroundColor(if (isSelected) (0xffff0000).toInt() else (0xff99cc11).toInt())
         }
     }
 }

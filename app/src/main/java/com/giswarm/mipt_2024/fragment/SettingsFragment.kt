@@ -1,5 +1,6 @@
 package com.giswarm.mipt_2024.fragment
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -30,6 +31,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var imageShapeRecyclerView: RecyclerView
     private lateinit var imageShapeRecyclerViewAdapter: MoonShapeAdapter
 
+    private var selectedImage: Drawable? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,9 +44,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             object : ViewTypeDelegateAdapter.OnViewSelectedListener {
                 override fun onItemSelected(item: ViewType, position: Int) {
                     when (item) {
-                        is RecyclerItemTextImage -> Log.d("DEBUG_1604textimage", item.text)
-                        is RecyclerItemText -> Log.d("DEBUG_1604text", item.text)
-                        else -> Log.d("DEBUG_1604", "item")
+                        is RecyclerItemTextImage -> selectedImage = item.image
+                        is RecyclerItemText -> selectedImage = null
+                        else -> Log.d("DEBUG_1604", "loading")
                     }
                 }
             },
@@ -52,10 +55,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             listOf(RecyclerItemText(getString(R.string.only_text)), RecyclerItemCircle(requireContext()), RecyclerItemSquare(requireContext())))
         imageShapeRecyclerView.adapter = imageShapeRecyclerViewAdapter
 
-        Log.d("DEBUG_SAVEINSTANCE", "onViewCreated")
         if (savedInstanceState != null) {
             imageLabelSwitch.isChecked = savedInstanceState.getBoolean(KEY_LABEL_SWITCH)
-            //imageShapeRecyclerViewAdapter.selectedPos = savedInstanceState.getInt(KEY_SHAPE_SPINNER)
+            imageShapeRecyclerViewAdapter.selectedPosition = savedInstanceState.getInt(KEY_SHAPE_SPINNER)
         }
 
         view.findViewById<Button>(R.id.settings_btn_save).setOnClickListener {
@@ -68,6 +70,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onSaveInstanceState(outState)
         Log.d("DEBUG_SAVEINSTANCE2", imageLabelSwitch.isChecked.toString())
         outState.putBoolean(KEY_LABEL_SWITCH, imageLabelSwitch.isChecked)
-        //outState.putInt(KEY_SHAPE_SPINNER, imageShapeRecyclerViewAdapter.selectedPos)
+        outState.putInt(KEY_SHAPE_SPINNER, imageShapeRecyclerViewAdapter.selectedPosition)
     }
 }

@@ -1,3 +1,5 @@
 3) new adapter and new recycler view - for example, on credentials screen for call/email
 
-5) prettify moonshapeadapter AND make moonshapeadapter selectable, save image (and options) and use it
+5) save image (and options) and use it
+
+6) recycler view is too big, make smaller
