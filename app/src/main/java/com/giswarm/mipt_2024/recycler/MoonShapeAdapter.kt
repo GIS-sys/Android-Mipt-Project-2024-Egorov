@@ -137,6 +137,7 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
             recyclerView.post {
                 notifyItemChanged(initPosition)
                 notifyItemRangeInserted(initPosition + 1, newItems.size)
+                notifyDataSetChanged() // TODO
             }
         }
     }

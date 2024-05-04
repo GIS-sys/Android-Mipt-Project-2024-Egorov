@@ -1,5 +1,6 @@
 package com.giswarm.mipt_2024.fragment
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -10,16 +11,17 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.giswarm.mipt_2024.storage.DrawableManager
 import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.recycler.MoonShapeAdapter
 import com.giswarm.mipt_2024.recycler.RecyclerItemCircle
 import com.giswarm.mipt_2024.recycler.RecyclerItemSquare
 import com.giswarm.mipt_2024.recycler.RecyclerItemText
-import com.giswarm.mipt_2024.recycler.RecyclerItemTextImageDelegateAdapter
 import com.giswarm.mipt_2024.recycler.RecyclerItemTextImage
 import com.giswarm.mipt_2024.recycler.ViewType
 import com.giswarm.mipt_2024.recycler.ViewTypeDelegateAdapter
-import java.time.Duration
+import com.giswarm.mipt_2024.storage.Consts.SHARERD_PRERFERENCES_MOON_SHOW_TEXT
+import com.giswarm.mipt_2024.storage.Consts.SHARERD_PRERFERENCES_SETTINGS
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
     companion object {
@@ -62,13 +64,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         view.findViewById<Button>(R.id.settings_btn_save).setOnClickListener {
             Toast.makeText(context, getString(R.string.saved), Toast.LENGTH_SHORT).show()
-            // SAVE
+            DrawableManager.saveDrawable(selectedImage, DrawableManager.MOON_IMAGE_TAG)
+            requireContext().getSharedPreferences(SHARERD_PRERFERENCES_SETTINGS, Context.MODE_PRIVATE).edit().putBoolean(SHARERD_PRERFERENCES_MOON_SHOW_TEXT, imageLabelSwitch.isChecked).commit()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("DEBUG_SAVEINSTANCE2", imageLabelSwitch.isChecked.toString())
         outState.putBoolean(KEY_LABEL_SWITCH, imageLabelSwitch.isChecked)
         outState.putInt(KEY_SHAPE_SPINNER, imageShapeRecyclerViewAdapter.selectedPosition)
     }
