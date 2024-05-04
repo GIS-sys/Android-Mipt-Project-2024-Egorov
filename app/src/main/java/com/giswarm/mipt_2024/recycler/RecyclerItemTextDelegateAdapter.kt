@@ -6,24 +6,22 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.giswarm.mipt_2024.R
 
-class RecyclerItemTextImageDelegateAdapter (val viewActions: ViewTypeDelegateAdapter.OnViewSelectedListener) : ViewTypeDelegateAdapter {
+class RecyclerItemTextDelegateAdapter (val viewActions: ViewTypeDelegateAdapter.OnViewSelectedListener) : ViewTypeDelegateAdapter {
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        return TextImageViewHolder(parent)
+        return TextViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
-        holder as TextImageViewHolder
-        holder.bind(item as RecyclerItemTextImage)
+        holder as TextViewHolder
+        holder.bind(item as RecyclerItemText)
     }
 
-    inner class TextImageViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        parent.inflate(R.layout.recycler_view_item_text_image)) {
+    inner class TextViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+        parent.inflate(R.layout.recycler_view_item_text)) {
 
-        private val imageView: ImageView = itemView.findViewById(R.id.imageview)
         private val textView: TextView = itemView.findViewById(R.id.textView)
 
-        fun bind(item: RecyclerItemTextImage) {
-            imageView.setImageDrawable(item.image)
+        fun bind(item: RecyclerItemText) {
             textView.text = item.text
             /*holder.itemView.setOnClickListener{
                 val lastSelected = selectedPos

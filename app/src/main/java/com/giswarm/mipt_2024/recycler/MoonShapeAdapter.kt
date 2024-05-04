@@ -28,7 +28,7 @@ private const val URL_IMAGE_HUB = "${URL_IMAGE_HOST}smileys-and-emotion"
 private const val URL_IMAGE_DEFAULT = "grinning-face"
 
 
-class MoonShapeAdapter(listener: RecyclerItemTextImageDelegateAdapter.OnViewSelectedListener, recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener, recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: ArrayList<ViewType> = ArrayList(itemsnew)
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
 
@@ -44,7 +44,7 @@ class MoonShapeAdapter(listener: RecyclerItemTextImageDelegateAdapter.OnViewSele
     // requires at least 1 element
     init {
         if (items.isEmpty()) {
-            items.add(listOf(RecyclerItemText("PLACEHOLDER")))
+            items.add(RecyclerItemText("PLACEHOLDER"))
         }
 
         OkHttpClient().newCall(
