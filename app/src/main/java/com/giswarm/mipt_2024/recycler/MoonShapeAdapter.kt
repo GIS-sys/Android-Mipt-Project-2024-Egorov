@@ -66,9 +66,10 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
         )
 
         delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter { recyclerView.post {
+            val currentImageLink = imageLinks.elementAtOrElse(items.size) { _ -> URL_IMAGE_DEFAULT }
             OkHttpClient().newCall(
                 Request.Builder()
-                    .url(URL_IMAGE_HOST + imageLinks.elementAtOrElse(items.size) { _ -> URL_IMAGE_DEFAULT })
+                    .url(URL_IMAGE_HOST + currentImageLink)
                     .build()
             ).enqueue(
                 object : Callback {
@@ -88,11 +89,11 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
                             .listener(object : RequestListener<Drawable> {
                                 override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: Boolean): Boolean {
                                     Log.e("DEBUG_1704", "onLoadFailed")
-                                    add(listOf(RecyclerItemTextImage(imageSrcPart, getDrawable(activity.applicationContext, R.drawable.mipt_android_icon)!!)))
+                                    add(listOf(RecyclerItemTextImage(currentImageLink, getDrawable(activity.applicationContext, R.drawable.mipt_android_icon)!!)))
                                     return true
                                 }
                                 override fun onResourceReady(p0: Drawable?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
-                                    add(listOf(RecyclerItemTextImage(imageSrcPart, p0!!)))
+                                    add(listOf(RecyclerItemTextImage(currentImageLink, p0!!)))
                                     return true
                                 }
                             }).submit()

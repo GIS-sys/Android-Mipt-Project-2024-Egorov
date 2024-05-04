@@ -13,6 +13,8 @@ import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
 
+
+const val UPDATE_DELAY: Long = 50
 class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private val handler: Handler = Handler()
     private lateinit var updater: Runnable
@@ -31,7 +33,7 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
         textGyr = view.rootView.findViewById<TextView>(R.id.text_view_text_gyr)
         textGps = view.rootView.findViewById<TextView>(R.id.text_view_text_gps)
         textMoon = view.rootView.findViewById<TextView>(R.id.text_view_text_moon)
-        debugIp = view.rootView.findViewById<EditText>(R.id.edit_text_url)
+        //debugIp = view.rootView.findViewById<EditText>(R.id.edit_text_url)
 
         updater = object : Runnable {
             @SuppressLint("SetTextI18n")
@@ -43,8 +45,8 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
                 textGps.text = "${getString(R.string.gps)} ${gpsPos.lat} ${gpsPos.lng}"
                 val moonPos = (activity as MoonPositionManager).getMoonPosition()
                 textMoon.text = "${getString(R.string.moon)} ${moonPos.azimuth} ${moonPos.altitude}"
-                DebugSendData.send(devPos, debugIp.text.toString())
-                handler.postDelayed(this, 20);
+                //DebugSendData.send(devPos, debugIp.text.toString())
+                handler.postDelayed(this, UPDATE_DELAY);
             }
         }
     }

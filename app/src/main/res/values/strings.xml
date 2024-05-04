@@ -15,6 +15,9 @@
     <string name="gyroscope">Gyroscope</string>
     <string name="gps">GPS</string>
     <string name="moon">Moon</string>
+    <string name="only_text">Text only</string>
+    <string name="circle">Circle</string>
+    <string name="square">Square</string>
     <string name="credentials_text">
         Project created for: MIPT,
         Project created by: Egorov Gordei

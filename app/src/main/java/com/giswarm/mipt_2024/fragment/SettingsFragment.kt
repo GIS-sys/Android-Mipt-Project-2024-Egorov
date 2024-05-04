@@ -47,7 +47,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             },
             imageShapeRecyclerView,
             requireActivity(),
-            listOf(RecyclerItemText("Text only"), RecyclerItemCircle(requireContext()), RecyclerItemSquare(requireContext())))
+            listOf(RecyclerItemText(getString(R.string.only_text)), RecyclerItemCircle(requireContext()), RecyclerItemSquare(requireContext())))
         imageShapeRecyclerView.adapter = imageShapeRecyclerViewAdapter
 
         Log.d("DEBUG_SAVEINSTANCE", "onViewCreated")

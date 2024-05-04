@@ -5,5 +5,5 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.giswarm.mipt_2024.R
 
 
-class RecyclerItemSquare(context: Context) : RecyclerItemTextImage("Square", getDrawable(context, R.drawable.square)!!) {
+class RecyclerItemSquare(context: Context) : RecyclerItemTextImage(context.getString(R.string.square), getDrawable(context, R.drawable.square)!!) {
 }
