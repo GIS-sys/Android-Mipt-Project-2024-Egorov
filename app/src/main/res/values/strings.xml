@@ -14,6 +14,11 @@
     <string name="accelerometer">Accelerometer</string>
     <string name="gyroscope">Gyroscope</string>
     <string name="gps">GPS</string>
+    <string name="moon">Moon</string>
+    <string name="only_text">Text only</string>
+    <string name="circle">Circle</string>
+    <string name="square">Square</string>
+    <string name="saved">Saved</string>
     <string name="credentials_text">
         Project created for: MIPT,
         Project created by: Egorov Gordei
@@ -24,4 +29,8 @@
     <string name="settings">Settings</string>
     <string name="credentials">Creds</string>
     <string name="placeholder_short">Lorem ipsum</string>
+    <string name="chosen_payment_type">Chosen payment type: </string>
+    <string name="chosen_payment_type_buy">Purchase</string>
+    <string name="chosen_payment_type_subscribe">Subscription</string>
+    <string name="credentials_payment_text">Choose payment type [still under dev]</string>
 </resources>

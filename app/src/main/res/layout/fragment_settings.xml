@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingStart="@dimen/btn_small_padding_x"
     android:paddingEnd="@dimen/btn_small_padding_x"
     android:paddingBottom="@dimen/btn_small_padding_y"
     android:orientation="vertical"
     android:background="@color/color_background">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/constraint_switch_text">
 
         <TextView
             android:layout_width="0dp"
@@ -19,21 +22,25 @@
             android:layout_weight="8"
             android:text="@string/settings_display_label"
             android:textSize="16sp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:id="@+id/image_label_switch" />
-    </LinearLayout>
+            android:id="@+id/image_label_switch"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:paddingTop="@dimen/btn_big_padding_y"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_switch_text"
+        android:id="@+id/constraint_text_moonshape">
 
         <TextView
             android:layout_width="0dp"
@@ -42,26 +49,30 @@
             android:text="@string/settings_display_image_shape"
             android:textSize="16sp"
             android:layout_marginEnd="8dp" />
-    </LinearLayout>
-    <LinearLayout
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Spinner
-            android:entries="@array/options_image_shape"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/btn_small_padding_y"
+        app:layout_constraintTop_toBottomOf="@+id/constraint_text_moonshape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/settings_btn_save"
+        android:id="@+id/constraint_recycler_moonshape">
+        <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/image_shape_recycler_view"
             android:layout_width="0dp"
             android:layout_weight="6"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:textSize="16sp"
-            android:id="@+id/image_shape_spinner" />
-    </LinearLayout>
+            android:overScrollMode="never"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="top" />
     <androidx.appcompat.widget.AppCompatButton
         android:layout_gravity="end"
         android:background="@drawable/button_ripple"
@@ -75,5 +86,7 @@
         android:paddingBottom="@dimen/btn_small_padding_y"
         android:layout_height="wrap_content"
         android:id="@+id/settings_btn_save"
-        android:text="@string/save" />
-</LinearLayout>
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

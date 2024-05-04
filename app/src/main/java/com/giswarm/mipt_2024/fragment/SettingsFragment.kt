@@ -1,13 +1,27 @@
 package com.giswarm.mipt_2024.fragment
 
+import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.giswarm.mipt_2024.storage.DrawableManager
 import com.giswarm.mipt_2024.R
+import com.giswarm.mipt_2024.recycler.MoonShapeAdapter
+import com.giswarm.mipt_2024.recycler.RecyclerItemCircle
+import com.giswarm.mipt_2024.recycler.RecyclerItemSquare
+import com.giswarm.mipt_2024.recycler.RecyclerItemText
+import com.giswarm.mipt_2024.recycler.RecyclerItemTextImage
+import com.giswarm.mipt_2024.recycler.ViewType
+import com.giswarm.mipt_2024.recycler.ViewTypeDelegateAdapter
+import com.giswarm.mipt_2024.storage.Consts.SHARERD_PRERFERENCES_MOON_SHOW_TEXT
+import com.giswarm.mipt_2024.storage.Consts.SHARERD_PRERFERENCES_SETTINGS
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
     companion object {
@@ -16,32 +30,48 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private lateinit var imageLabelSwitch: SwitchCompat
-    private lateinit var imageShapeSpinner: Spinner
+    private lateinit var imageShapeRecyclerView: RecyclerView
+    private lateinit var imageShapeRecyclerViewAdapter: MoonShapeAdapter
+
+    private var selectedImage: Drawable? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         imageLabelSwitch = view.findViewById(R.id.image_label_switch)
-        imageShapeSpinner = view.findViewById(R.id.image_shape_spinner)
 
-        Log.d("DEBUG_SAVEINSTANCE", "onViewCreated")
+        imageShapeRecyclerView = view.findViewById(R.id.image_shape_recycler_view)
+        imageShapeRecyclerView.layoutManager = LinearLayoutManager(activity)
+        imageShapeRecyclerViewAdapter = MoonShapeAdapter(
+            object : ViewTypeDelegateAdapter.OnViewSelectedListener {
+                override fun onItemSelected(item: ViewType, position: Int) {
+                    when (item) {
+                        is RecyclerItemTextImage -> selectedImage = item.image
+                        is RecyclerItemText -> selectedImage = null
+                        else -> Log.d("DEBUG_1604", "loading")
+                    }
+                }
+            },
+            imageShapeRecyclerView,
+            requireActivity(),
+            listOf(RecyclerItemText(getString(R.string.only_text)), RecyclerItemCircle(requireContext()), RecyclerItemSquare(requireContext())))
+        imageShapeRecyclerView.adapter = imageShapeRecyclerViewAdapter
+
         if (savedInstanceState != null) {
-            Log.d("DEBUG_SAVEINSTANCE", savedInstanceState.getBoolean(KEY_LABEL_SWITCH).toString())
-            Log.d("DEBUG_SAVEINSTANCE", savedInstanceState.getInt(KEY_SHAPE_SPINNER).toString())
             imageLabelSwitch.isChecked = savedInstanceState.getBoolean(KEY_LABEL_SWITCH)
-            imageShapeSpinner.setSelection(savedInstanceState.getInt(KEY_SHAPE_SPINNER))
+            imageShapeRecyclerViewAdapter.selectedPosition = savedInstanceState.getInt(KEY_SHAPE_SPINNER)
         }
 
         view.findViewById<Button>(R.id.settings_btn_save).setOnClickListener {
-            requireActivity().onBackPressed()
+            Toast.makeText(context, getString(R.string.saved), Toast.LENGTH_SHORT).show()
+            DrawableManager.saveDrawable(selectedImage, DrawableManager.MOON_IMAGE_TAG)
+            requireContext().getSharedPreferences(SHARERD_PRERFERENCES_SETTINGS, Context.MODE_PRIVATE).edit().putBoolean(SHARERD_PRERFERENCES_MOON_SHOW_TEXT, imageLabelSwitch.isChecked).commit()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        Log.d("DEBUG_SAVEINSTANCE2", imageLabelSwitch.isChecked.toString())
-        Log.d("DEBUG_SAVEINSTANCE2", imageShapeSpinner.selectedItemPosition.toString())
         outState.putBoolean(KEY_LABEL_SWITCH, imageLabelSwitch.isChecked)
-        outState.putInt(KEY_SHAPE_SPINNER, imageShapeSpinner.selectedItemPosition)
+        outState.putInt(KEY_SHAPE_SPINNER, imageShapeRecyclerViewAdapter.selectedPosition)
     }
 }

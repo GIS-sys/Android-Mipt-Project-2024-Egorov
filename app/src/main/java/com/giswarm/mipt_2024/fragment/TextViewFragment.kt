@@ -11,7 +11,10 @@ import com.giswarm.mipt_2024.DebugSendData
 import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.GpsPositionManager
+import com.giswarm.mipt_2024.position.MoonPositionManager
 
+
+const val UPDATE_DELAY: Long = 50
 class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private val handler: Handler = Handler()
     private lateinit var updater: Runnable
@@ -19,6 +22,7 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private lateinit var textAcc: TextView
     private lateinit var textGyr: TextView
     private lateinit var textGps: TextView
+    private lateinit var textMoon: TextView
 
     private lateinit var debugIp: EditText
 
@@ -28,7 +32,8 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
         textAcc = view.rootView.findViewById<TextView>(R.id.text_view_text_acc)
         textGyr = view.rootView.findViewById<TextView>(R.id.text_view_text_gyr)
         textGps = view.rootView.findViewById<TextView>(R.id.text_view_text_gps)
-        debugIp = view.rootView.findViewById<EditText>(R.id.edit_text_url)
+        textMoon = view.rootView.findViewById<TextView>(R.id.text_view_text_moon)
+        //debugIp = view.rootView.findViewById<EditText>(R.id.edit_text_url)
 
         updater = object : Runnable {
             @SuppressLint("SetTextI18n")
@@ -38,8 +43,10 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
                 textGyr.text = "${getString(R.string.gyroscope)} ${devPos.gyrX} ${devPos.gyrY} ${devPos.gyrZ}"
                 val gpsPos = (activity as GpsPositionManager).getGpsPosition()
                 textGps.text = "${getString(R.string.gps)} ${gpsPos.lat} ${gpsPos.lng}"
-                DebugSendData.send(devPos, debugIp.text.toString())
-                handler.postDelayed(this, 20);
+                val moonPos = (activity as MoonPositionManager).getMoonPosition()
+                textMoon.text = "${getString(R.string.moon)} ${moonPos.azimuth} ${moonPos.altitude}"
+                //DebugSendData.send(devPos, debugIp.text.toString())
+                handler.postDelayed(this, UPDATE_DELAY);
             }
         }
     }

@@ -8,6 +8,11 @@
     <string name="accelerometer">Аккселерометр</string>
     <string name="gyroscope">Гироскоп</string>
     <string name="gps">Геолокация</string>
+    <string name="moon">Луна</string>
+    <string name="only_text">Только текст</string>
+    <string name="circle">Круг</string>
+    <string name="square">Квадрат</string>
+    <string name="saved">Сохранено</string>
     <string name="credentials_text">
         Проект создан для: МФТИ,
         Автор проекта: Егоров Гордей
@@ -18,4 +23,8 @@
     <string name="settings">Опции</string>
     <string name="credentials">Авторы</string>
     <string name="placeholder_short">Lorem ipsum</string>
+    <string name="chosen_payment_type">Выбранный тип оплаты: </string>
+    <string name="chosen_payment_type_buy">Покупка</string>
+    <string name="chosen_payment_type_subscribe">Подписка</string>
+    <string name="credentials_payment_text">Выберите тип оплаты [пока в разработке]</string>
 </resources>

@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.giswarm.mipt_2024.fragment.CredentialsFragment
 import com.giswarm.mipt_2024.fragment.GreetingsFragment
 import com.giswarm.mipt_2024.fragment.MainFragment
@@ -30,6 +32,15 @@ import com.giswarm.mipt_2024.position.GpsPosition
 import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPosition
 import com.giswarm.mipt_2024.position.MoonPositionManager
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.jsoup.Jsoup
+import java.io.IOException
+import java.util.Timer
+import java.util.TimerTask
 
 const val READ_ALL_LOCATION_PERMISSION_CODE = 111
 
@@ -43,6 +54,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
     private var gpsPosition: GpsPosition = GpsPosition(0.0, 0.0)
 
     private var moonPosition: MoonPosition = MoonPosition(0.0, 0.0)
+    private val timerMoon = Timer()
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
@@ -159,6 +171,38 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
                 add(R.id.root_fragment_container_view, GreetingsFragment())
             }
         }
+
+        timerMoon.schedule(object : TimerTask() {
+            override fun run() {
+                OkHttpClient().newCall(
+                    Request.Builder()
+                        // REMOVE TMP FROM KEY FOR REAL TEST - for now wrong api key to not waste limits
+                        .url("https://api.ipgeolocation.io/astronomy?apiKey=fc95889c2ce94d59900262967d16113cTMP&lat=${gpsPosition.lat}&long=${gpsPosition.lng}")
+                        //.header("Authorization", "Bearer ")
+                        .build()
+                ).enqueue(
+                    object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.e("DEBUG_1704", e.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            try {
+                                val responseBody = response.body?.string()!!
+                                val moonPos: Map<String, Any?> =
+                                    jacksonObjectMapper().readValue(responseBody)
+                                moonPosition.altitude =
+                                    moonPos["moon_altitude"].toString().toDouble()
+                                moonPosition.azimuth = moonPos["moon_azimuth"].toString().toDouble()
+                            } catch (e: Exception) {
+                                moonPosition.altitude = -51.84009503568756
+                                moonPosition.azimuth = -64.20681921380901
+                            }
+                        }
+                    }
+                )
+            }
+        }, 5000, 60000)
     }
 
     fun moveToMain() {
