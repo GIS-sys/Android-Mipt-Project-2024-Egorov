@@ -34,6 +34,7 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
 
     // only single loading item allowed
     private val loadingItem = object : ViewType {
+        override var isSelected: Boolean = false
         override fun getViewType() = AdapterConstants.LOADING
     }
 

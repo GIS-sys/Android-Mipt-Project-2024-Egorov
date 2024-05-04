@@ -1,5 +1,6 @@
 package com.giswarm.mipt_2024.recycler
 
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,6 +15,7 @@ class RecyclerItemTextImageDelegateAdapter (val viewActions: ViewTypeDelegateAda
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
         holder as TextImageViewHolder
         holder.bind(item as RecyclerItemTextImage)
+
     }
 
     inner class TextImageViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -25,16 +27,15 @@ class RecyclerItemTextImageDelegateAdapter (val viewActions: ViewTypeDelegateAda
         fun bind(item: RecyclerItemTextImage) {
             imageView.setImageDrawable(item.image)
             textView.text = item.text
-            /*holder.itemView.setOnClickListener{
-                val lastSelected = selectedPos
-                selectedPos = position
-                onClickListener.invoke(position)
-                notifyItemChanged(lastSelected)
-                notifyItemChanged(position)
-            }*/
-            //holder.itemView.setBackgroundColor(if (selectedPos == position) (0xff000000).toInt() else (0xff99cc11u).toInt())
 
-            super.itemView.setOnClickListener { viewActions.onItemSelected(item)}
+            super.itemView.setOnClickListener {
+                Log.d("DEBUG_1604", "item isselected true")
+                item.isSelected = !item.isSelected
+                viewActions.onItemSelected(item)
+                bind(item)
+            }
+            Log.d("DEBUG_1604", "item isselected ?")
+            super.itemView.setBackgroundColor(if (item.isSelected) (0xffff0000).toInt() else (0xff99cc11).toInt())
         }
     }
 }
