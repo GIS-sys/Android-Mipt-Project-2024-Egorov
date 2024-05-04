@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.giswarm.mipt_2024.fragment.CredentialsFragment
 import com.giswarm.mipt_2024.fragment.GreetingsFragment
 import com.giswarm.mipt_2024.fragment.MainFragment
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
     private var gpsPosition: GpsPosition = GpsPosition(0.0, 0.0)
 
     private var moonPosition: MoonPosition = MoonPosition(0.0, 0.0)
-    private val timer = Timer()
+    private val timerMoon = Timer()
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
@@ -170,44 +172,37 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
             }
         }
 
-        timer.schedule(object : TimerTask() {
+        timerMoon.schedule(object : TimerTask() {
             override fun run() {
-                val request = Request.Builder()
-                    // .url("https://api.timezonedb.com/v2.1/get-time-zone?key=7KMM5TNWCGON&by=position&lat=${gpsPosition.lat}&lng=${gpsPosition.lng}")
-                    .url("https://current.time?lat=${gpsPosition.lat}&lng=${gpsPosition.lng}")
-                    .build()
-                OkHttpClient().newCall(request).enqueue(
+                OkHttpClient().newCall(
+                    Request.Builder()
+                        // REMOVE TMP FROM KEY FOR REAL TEST - for now wrong api key to not waste limits
+                        .url("https://api.ipgeolocation.io/astronomy?apiKey=fc95889c2ce94d59900262967d16113cTMP&lat=${gpsPosition.lat}&long=${gpsPosition.lng}")
+                        //.header("Authorization", "Bearer ")
+                        .build()
+                ).enqueue(
                     object : Callback {
                         override fun onFailure(call: Call, e: IOException) {
-                            Log.d("DEBUG_1704", e.toString())
+                            Log.e("DEBUG_1704", e.toString())
                         }
 
                         override fun onResponse(call: Call, response: Response) {
-                            val responseBody = response.body?.string()
-                            Log.d("DEBUG_1704", "TIME ZONE" + responseBody)
-                            val request = Request.Builder()
-                                .url("https://moon.position/")
-                                .build()
-                            OkHttpClient().newCall(request).enqueue(
-                                object : Callback {
-                                    override fun onFailure(call: Call, e: IOException) {
-                                        Log.d("DEBUG_1704", e.toString())
-                                    }
-
-                                    override fun onResponse(call: Call, response: Response) {
-                                        val responseBody = response.body?.string()
-                                        Log.d("DEBUG_1704", "MOON_POS" + responseBody)
-                                        // val jsonMoonPos =  responseBody.asJson
-                                        // moonPosition.rightAscension = jsonMoonPos.asc
-                                        // moonPosition.declination = jsonMoonPos.dec
-                                    }
-                                }
-                            )
+                            try {
+                                val responseBody = response.body?.string()!!
+                                val moonPos: Map<String, Any?> =
+                                    jacksonObjectMapper().readValue(responseBody)
+                                moonPosition.altitude =
+                                    moonPos["moon_altitude"].toString().toDouble()
+                                moonPosition.azimuth = moonPos["moon_azimuth"].toString().toDouble()
+                            } catch (e: Exception) {
+                                moonPosition.altitude = -51.84009503568756
+                                moonPosition.azimuth = -64.20681921380901
+                            }
                         }
                     }
                 )
             }
-        }, 0, 10000)
+        }, 5000, 60000)
     }
 
     fun moveToMain() {
