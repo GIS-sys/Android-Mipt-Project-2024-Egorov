@@ -30,6 +30,15 @@ import com.giswarm.mipt_2024.position.GpsPosition
 import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPosition
 import com.giswarm.mipt_2024.position.MoonPositionManager
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.jsoup.Jsoup
+import java.io.IOException
+import java.util.Timer
+import java.util.TimerTask
 
 const val READ_ALL_LOCATION_PERMISSION_CODE = 111
 
@@ -43,6 +52,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
     private var gpsPosition: GpsPosition = GpsPosition(0.0, 0.0)
 
     private var moonPosition: MoonPosition = MoonPosition(0.0, 0.0)
+    private val timer = Timer()
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
@@ -159,6 +169,45 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
                 add(R.id.root_fragment_container_view, GreetingsFragment())
             }
         }
+
+        timer.schedule(object : TimerTask() {
+            override fun run() {
+                val request = Request.Builder()
+                    // .url("https://api.timezonedb.com/v2.1/get-time-zone?key=7KMM5TNWCGON&by=position&lat=${gpsPosition.lat}&lng=${gpsPosition.lng}")
+                    .url("https://current.time?lat=${gpsPosition.lat}&lng=${gpsPosition.lng}")
+                    .build()
+                OkHttpClient().newCall(request).enqueue(
+                    object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("DEBUG_1704", e.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            val responseBody = response.body?.string()
+                            Log.d("DEBUG_1704", "TIME ZONE" + responseBody)
+                            val request = Request.Builder()
+                                .url("https://moon.position/")
+                                .build()
+                            OkHttpClient().newCall(request).enqueue(
+                                object : Callback {
+                                    override fun onFailure(call: Call, e: IOException) {
+                                        Log.d("DEBUG_1704", e.toString())
+                                    }
+
+                                    override fun onResponse(call: Call, response: Response) {
+                                        val responseBody = response.body?.string()
+                                        Log.d("DEBUG_1704", "MOON_POS" + responseBody)
+                                        // val jsonMoonPos =  responseBody.asJson
+                                        // moonPosition.rightAscension = jsonMoonPos.asc
+                                        // moonPosition.declination = jsonMoonPos.dec
+                                    }
+                                }
+                            )
+                        }
+                    }
+                )
+            }
+        }, 0, 10000)
     }
 
     fun moveToMain() {

@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,32 +22,43 @@ import org.jsoup.Jsoup
 import java.io.IOException
 
 
+// links for loading items
+private const val URL_IMAGE_HOST = "https://emojiguide.org/"
+private const val URL_IMAGE_HUB = "${URL_IMAGE_HOST}smileys-and-emotion"
+private const val URL_IMAGE_DEFAULT = "grinning-face"
+
+
 class MoonShapeAdapter(listener: RecyclerItemTextImageDelegateAdapter.OnViewSelectedListener, recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: ArrayList<ViewType> = ArrayList(itemsnew)
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
+
+    // only single loading item allowed
     private val loadingItem = object : ViewType {
         override fun getViewType() = AdapterConstants.LOADING
     }
 
+    // for infinite load we need lock (for sync) and array of downloaded images
     private val lock = Any()
     private val imageLinks: ArrayList<String> = ArrayList()
 
     // requires at least 1 element
     init {
-        val request = Request.Builder()
-            .url("https://emojiguide.org/smileys-and-emotion")
-            .build()
-        OkHttpClient().newCall(request).enqueue(
+        if (items.isEmpty()) {
+            items.add(listOf(RecyclerItemText("PLACEHOLDER")))
+        }
+
+        OkHttpClient().newCall(
+            Request.Builder().url(URL_IMAGE_HUB).build()
+        ).enqueue(
             object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    Log.d("DEBUG_1704", e.toString())
+                    Log.e("DEBUG_1704", e.toString())
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    val responseBody = response.body?.string()
-                    val document = Jsoup.parse(responseBody)
-                    val element = document.getElementById("content")
-                    for (innerElement in element.children()) {
+                    val document = Jsoup.parse(response.body?.string())
+                    val elementListLinks = document.getElementById("content")
+                    for (innerElement in elementListLinks.children()) {
                         imageLinks.add(innerElement.attr("href"))
                     }
                 }
@@ -54,21 +66,21 @@ class MoonShapeAdapter(listener: RecyclerItemTextImageDelegateAdapter.OnViewSele
         )
 
         delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter { recyclerView.post {
-            val request = Request.Builder()
-                .url("https://emojiguide.org/" + imageLinks.elementAtOrElse(items.size) { _ -> "/grinning-face" })
-                .build()
-            OkHttpClient().newCall(request).enqueue(
+            OkHttpClient().newCall(
+                Request.Builder()
+                    .url(URL_IMAGE_HOST + imageLinks.elementAtOrElse(items.size) { _ -> URL_IMAGE_DEFAULT })
+                    .build()
+            ).enqueue(
                 object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        Log.d("DEBUG_1704", e.toString())
+                        Log.e("DEBUG_1704", e.toString())
                     }
 
                     override fun onResponse(call: Call, response: Response) {
-                        val responseBody = response.body?.string()
-                        val document = Jsoup.parse(responseBody)
-                        val element = document.getElementById("pictures-list")
-                        val imageSrc = "https://emojiguide.org" + element.child(0).child(0).attr("src")
-                        Log.d("DEBUG_1704", imageSrc)
+                        val document = Jsoup.parse(response.body?.string())
+                        val elementImages = document.getElementById("pictures-list")
+                        val imageSrcPart = elementImages.child(0).child(0).attr("src")
+                        val imageSrc = URL_IMAGE_HOST + imageSrcPart
                         Glide.with(activity).asDrawable()
                             .placeholder(R.drawable.mipt_android_icon)
                             .error(R.drawable.mipt_android_icon)
@@ -76,13 +88,11 @@ class MoonShapeAdapter(listener: RecyclerItemTextImageDelegateAdapter.OnViewSele
                             .listener(object : RequestListener<Drawable> {
                                 override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: Boolean): Boolean {
                                     Log.e("DEBUG_1704", "onLoadFailed")
-                                    //do something if error loading
+                                    add(listOf(RecyclerItemTextImage(imageSrcPart, getDrawable(activity.applicationContext, R.drawable.mipt_android_icon)!!)))
                                     return true
                                 }
                                 override fun onResourceReady(p0: Drawable?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
-                                    Log.d("DEBUG_1704", "OnResourceReady")
-                                    //do something when picture already loaded
-                                    add(listOf(RecyclerItemTextImage("Item "+items.size.toString(), p0!!)))
+                                    add(listOf(RecyclerItemTextImage(imageSrcPart, p0!!)))
                                     return true
                                 }
                             }).submit()
@@ -91,6 +101,7 @@ class MoonShapeAdapter(listener: RecyclerItemTextImageDelegateAdapter.OnViewSele
             )
         }})
         delegateAdapters.put(AdapterConstants.IMAGE_TEXT, RecyclerItemTextImageDelegateAdapter(listener))
+        delegateAdapters.put(AdapterConstants.TEXT, RecyclerItemTextDelegateAdapter(listener))
         items.add(loadingItem)
     }
 
@@ -124,10 +135,4 @@ class MoonShapeAdapter(listener: RecyclerItemTextImageDelegateAdapter.OnViewSele
             notifyItemRangeRemoved(0, lastSize)
         }
     }
-
-    /*
-    fun getLoadedItems(): List<ViewType> = items
-            .filter { it.getViewType() == AdapterConstants.IMAGE_TEXT }
-            .map { it as RecyclerItemTextImage }
-    */
 }
