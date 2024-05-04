@@ -11,7 +11,7 @@ class LoadingDelegateAdapter(private val callbackReachEnd: Runnable) : ViewTypeD
 
     override fun onCreateViewHolder(parent: ViewGroup) = LoadingViewHolder(parent)
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType, isSelected: Boolean, position: Int) {
         Log.d("DEBUG_1704", "onBindViewHolder")
         callbackReachEnd.run()
     }

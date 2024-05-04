@@ -12,10 +12,9 @@ class RecyclerItemTextImageDelegateAdapter (val viewActions: ViewTypeDelegateAda
         return TextImageViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType, isSelected: Boolean, position: Int) {
         holder as TextImageViewHolder
-        holder.bind(item as RecyclerItemTextImage)
-
+        holder.bind(item as RecyclerItemTextImage, isSelected, position)
     }
 
     inner class TextImageViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -24,18 +23,14 @@ class RecyclerItemTextImageDelegateAdapter (val viewActions: ViewTypeDelegateAda
         private val imageView: ImageView = itemView.findViewById(R.id.imageview)
         private val textView: TextView = itemView.findViewById(R.id.textView)
 
-        fun bind(item: RecyclerItemTextImage) {
+        fun bind(item: RecyclerItemTextImage, isSelected: Boolean, position: Int) {
             imageView.setImageDrawable(item.image)
             textView.text = item.text
 
             super.itemView.setOnClickListener {
-                Log.d("DEBUG_1604", "item isselected true")
-                item.isSelected = !item.isSelected
-                viewActions.onItemSelected(item)
-                bind(item)
+                viewActions.onItemSelected(item, position)
             }
-            Log.d("DEBUG_1604", "item isselected ?")
-            super.itemView.setBackgroundColor(if (item.isSelected) (0xffff0000).toInt() else (0xff99cc11).toInt())
+            super.itemView.setBackgroundColor(if (isSelected) (0xffff0000).toInt() else (0xff99cc11).toInt())
         }
     }
 }

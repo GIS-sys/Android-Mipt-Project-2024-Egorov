@@ -5,10 +5,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 interface ViewTypeDelegateAdapter {
     interface OnViewSelectedListener {
-        fun onItemSelected(item: ViewType)
+        fun onItemSelected(item: ViewType, position: Int)
     }
 
     fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder
 
-    fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType)
+    fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType, isSelected: Boolean, position: Int)
 }

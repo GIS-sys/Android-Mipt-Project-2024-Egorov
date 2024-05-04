@@ -39,7 +39,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         imageShapeRecyclerView.layoutManager = LinearLayoutManager(activity)
         imageShapeRecyclerViewAdapter = MoonShapeAdapter(
             object : ViewTypeDelegateAdapter.OnViewSelectedListener {
-                override fun onItemSelected(item: ViewType) {
+                override fun onItemSelected(item: ViewType, position: Int) {
                     when (item) {
                         is RecyclerItemTextImage -> Log.d("DEBUG_1604textimage", item.text)
                         is RecyclerItemText -> Log.d("DEBUG_1604text", item.text)

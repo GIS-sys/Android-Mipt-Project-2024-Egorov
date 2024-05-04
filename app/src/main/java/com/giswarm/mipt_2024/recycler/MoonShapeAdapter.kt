@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat
 import androidx.core.content.ContextCompat.getDrawable
-import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -28,13 +27,13 @@ private const val URL_IMAGE_HUB = "${URL_IMAGE_HOST}smileys-and-emotion"
 private const val URL_IMAGE_DEFAULT = "grinning-face"
 
 
-class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener, recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener, private var recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: ArrayList<ViewType> = ArrayList(itemsnew)
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
+    private var selectedPosition: Int = 0
 
     // only single loading item allowed
     private val loadingItem = object : ViewType {
-        override var isSelected: Boolean = false
         override fun getViewType() = AdapterConstants.LOADING
     }
 
@@ -102,8 +101,17 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
                 }
             )
         }})
-        delegateAdapters.put(AdapterConstants.IMAGE_TEXT, RecyclerItemTextImageDelegateAdapter(listener))
-        delegateAdapters.put(AdapterConstants.TEXT, RecyclerItemTextDelegateAdapter(listener))
+        val listenerWithSelection = object : ViewTypeDelegateAdapter.OnViewSelectedListener {
+            override fun onItemSelected(item: ViewType, position: Int) {
+                val lastSelected = selectedPosition
+                selectedPosition = position
+                listener.onItemSelected(item, position)
+                notifyItemChanged(position)
+                notifyItemChanged(lastSelected)
+            }
+        }
+        delegateAdapters.put(AdapterConstants.IMAGE_TEXT, RecyclerItemTextImageDelegateAdapter(listenerWithSelection))
+        delegateAdapters.put(AdapterConstants.TEXT, RecyclerItemTextDelegateAdapter(listenerWithSelection))
         items.add(loadingItem)
     }
 
@@ -112,7 +120,8 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = delegateAdapters[viewType]!!.onCreateViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        delegateAdapters[getItemViewType(position)]!!.onBindViewHolder(holder, items[position])
+        Log.d("DEBUG_1604", "onBindViewHolder $position $selectedPosition")
+        delegateAdapters[getItemViewType(position)]!!.onBindViewHolder(holder, items[position], position==selectedPosition, position)
     }
 
     override fun getItemViewType(position: Int) = items[position].getViewType()
@@ -125,8 +134,10 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
             // add back
             items.addAll(newItems)
             items.add(loadingItem)
-            notifyItemRangeChanged(initPosition, newItems.size + 1)
-            notifyItemRangeInserted(initPosition, newItems.size + 1)
+            recyclerView.post {
+                notifyItemChanged(initPosition)
+                notifyItemRangeInserted(initPosition + 1, newItems.size)
+            }
         }
     }
 

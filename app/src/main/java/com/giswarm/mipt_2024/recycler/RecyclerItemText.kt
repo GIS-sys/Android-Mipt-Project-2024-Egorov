@@ -4,6 +4,5 @@ import android.graphics.drawable.Drawable
 
 
 open class RecyclerItemText(val text: String) : ViewType {
-    override var isSelected: Boolean = false
     override fun getViewType() = AdapterConstants.TEXT
 }
