@@ -13,6 +13,7 @@ import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.recycler.MoonShapeAdapter
 import com.giswarm.mipt_2024.recycler.PaymentTypeAdapter
 import com.giswarm.mipt_2024.recycler.RecyclerItemCircle
+import com.giswarm.mipt_2024.recycler.RecyclerItemInputDelete
 import com.giswarm.mipt_2024.recycler.RecyclerItemSquare
 import com.giswarm.mipt_2024.recycler.RecyclerItemText
 import com.giswarm.mipt_2024.recycler.RecyclerItemTextImage
@@ -34,14 +35,24 @@ class CredentialsFragment : Fragment(R.layout.fragment_credentials) {
             object : ViewTypeDelegateAdapter.OnViewSelectedListener {
                 override fun onItemSelected(item: ViewType, position: Int) {
                     when (item) {
-                        is RecyclerItemText -> Toast.makeText(requireContext(), getString(R.string.chosen_payment_type) + item.text, Toast.LENGTH_SHORT).show()
+                        is RecyclerItemText -> Toast.makeText(
+                            requireContext(),
+                            getString(R.string.chosen_payment_type) + item.text,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
                         else -> Log.d("DEBUG_1604", "loading")
                     }
                 }
             },
             paymentTypeRecyclerView,
             requireActivity(),
-            listOf(RecyclerItemText(getString(R.string.chosen_payment_type_buy)), RecyclerItemText(getString(R.string.chosen_payment_type_subscribe)))
+            listOf(
+                RecyclerItemInputDelete("xxx", getString(R.string.chosen_payment_type_buy)),
+                RecyclerItemInputDelete("yyy", getString(R.string.chosen_payment_type_subscribe)),
+                RecyclerItemInputDelete("yyy", getString(R.string.chosen_payment_type_subscribe)),
+                RecyclerItemInputDelete("yyy", getString(R.string.chosen_payment_type_subscribe))
+            )
         )
         paymentTypeRecyclerView.adapter = paymentTypeRecyclerViewAdapter
     }

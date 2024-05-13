@@ -42,12 +42,8 @@ class PaymentTypeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListene
             }
         }
         delegateAdapters.put(
-            AdapterConstants.IMAGE_TEXT,
-            RecyclerItemTextImageDelegateAdapter(listenerWithSelection)
-        )
-        delegateAdapters.put(
-            AdapterConstants.TEXT,
-            RecyclerItemTextDelegateAdapter(listenerWithSelection)
+            AdapterConstants.TEXT_DELETE,
+            RecyclerItemInputDeleteDelegateAdapter(listenerWithSelection)
         )
     }
 
@@ -56,7 +52,7 @@ class PaymentTypeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListene
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = delegateAdapters[viewType]!!.onCreateViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        delegateAdapters[getItemViewType(position)]!!.onBindViewHolder(holder, items[position], position==selectedPosition, position)
+        delegateAdapters[getItemViewType(position)]!!.onBindViewHolder(holder, items[position], false, 0)
     }
 
     override fun getItemViewType(position: Int) = items[position].getViewType()
