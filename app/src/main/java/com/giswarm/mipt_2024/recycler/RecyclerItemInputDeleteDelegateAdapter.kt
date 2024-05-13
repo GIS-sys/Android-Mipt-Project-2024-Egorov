@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.giswarm.mipt_2024.R
 
@@ -27,7 +28,7 @@ class RecyclerItemInputDeleteDelegateAdapter (val viewActions: ViewTypeDelegateA
         fun bind(item: RecyclerItemInputDelete) {
             editView.setText(item.text, TextView.BufferType.EDITABLE)
             btnView.setOnClickListener {
-                Log.d("DEBUG1305", item.id + editView.text.toString())
+                viewActions.onItemDeleted(item)
             }
         }
     }

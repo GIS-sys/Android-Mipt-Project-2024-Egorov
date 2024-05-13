@@ -26,5 +26,6 @@
     <string name="chosen_payment_type">Выбранный тип оплаты: </string>
     <string name="chosen_payment_type_buy">Покупка</string>
     <string name="chosen_payment_type_subscribe">Подписка</string>
-    <string name="credentials_payment_text">Выберите тип оплаты [пока в разработке]</string>
+    <string name="credentials_payment_text">Сохраните позицию луны</string>
+    <string name="add">Добавить</string>
 </resources>
