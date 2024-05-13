@@ -13,6 +13,7 @@
     <string name="settings_display_image_shape">Show moon as shape</string>
     <string name="accelerometer">Accelerometer</string>
     <string name="gyroscope">Gyroscope</string>
+    <string name="compass">Compass</string>
     <string name="gps">GPS</string>
     <string name="moon">Moon</string>
     <string name="only_text">Text only</string>

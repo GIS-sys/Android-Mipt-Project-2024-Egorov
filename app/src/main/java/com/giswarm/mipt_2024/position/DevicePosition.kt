@@ -6,5 +6,6 @@ data class DevicePosition(
     var accZ: Double,
     var gyrX: Double,
     var gyrY: Double,
-    var gyrZ: Double
+    var gyrZ: Double,
+    var deg: Double
 )
