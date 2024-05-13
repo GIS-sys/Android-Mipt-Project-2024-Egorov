@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.giswarm.mipt_2024.R
+import com.giswarm.mipt_2024.position.MoonPositionManager
 import com.giswarm.mipt_2024.recycler.MoonShapeAdapter
 import com.giswarm.mipt_2024.recycler.PaymentTypeAdapter
 import com.giswarm.mipt_2024.recycler.RecyclerItemCircle
@@ -25,6 +26,7 @@ import com.giswarm.mipt_2024.storage.DrawableManager
 class CredentialsFragment : Fragment(R.layout.fragment_credentials) {
     private lateinit var paymentTypeRecyclerView: RecyclerView
     private lateinit var paymentTypeRecyclerViewAdapter: PaymentTypeAdapter
+    private lateinit var buttonAdd: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,28 +34,20 @@ class CredentialsFragment : Fragment(R.layout.fragment_credentials) {
         paymentTypeRecyclerView = view.findViewById(R.id.cred_payment_recycler_view)
         paymentTypeRecyclerView.layoutManager = LinearLayoutManager(activity)
         paymentTypeRecyclerViewAdapter = PaymentTypeAdapter(
-            object : ViewTypeDelegateAdapter.OnViewSelectedListener {
-                override fun onItemSelected(item: ViewType, position: Int) {
-                    when (item) {
-                        is RecyclerItemText -> Toast.makeText(
-                            requireContext(),
-                            getString(R.string.chosen_payment_type) + item.text,
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        else -> Log.d("DEBUG_1604", "loading")
-                    }
-                }
-            },
             paymentTypeRecyclerView,
             requireActivity(),
-            listOf(
-                RecyclerItemInputDelete("xxx", getString(R.string.chosen_payment_type_buy)),
-                RecyclerItemInputDelete("yyy", getString(R.string.chosen_payment_type_subscribe)),
-                RecyclerItemInputDelete("yyy", getString(R.string.chosen_payment_type_subscribe)),
-                RecyclerItemInputDelete("yyy", getString(R.string.chosen_payment_type_subscribe))
-            )
+            currentElement(0)
         )
         paymentTypeRecyclerView.adapter = paymentTypeRecyclerViewAdapter
+
+        buttonAdd = view.findViewById(R.id.cred_payment_btn)
+        buttonAdd.setOnClickListener {
+            paymentTypeRecyclerViewAdapter.add(currentElement())
+        }
+    }
+
+    private fun currentElement(idArg: Int? = null): List<RecyclerItemInputDelete> {
+        val id: Int = idArg ?: paymentTypeRecyclerViewAdapter.itemCount
+        return listOf(RecyclerItemInputDelete("position$id",  (requireActivity() as MoonPositionManager).getMoonPosition().toString()))
     }
 }

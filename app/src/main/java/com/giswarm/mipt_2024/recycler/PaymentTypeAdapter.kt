@@ -21,7 +21,7 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import java.io.IOException
 
-class PaymentTypeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener, private var recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PaymentTypeAdapter(private var recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: ArrayList<ViewType> = ArrayList(itemsnew)
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
     var selectedPosition: Int = 0
@@ -36,7 +36,6 @@ class PaymentTypeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListene
             override fun onItemSelected(item: ViewType, position: Int) {
                 val lastSelected = selectedPosition
                 selectedPosition = position
-                listener.onItemSelected(item, position)
                 notifyItemChanged(position)
                 notifyItemChanged(lastSelected)
             }
