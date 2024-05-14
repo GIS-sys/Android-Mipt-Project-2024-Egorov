@@ -51,21 +51,35 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                         else -> Log.d("DEBUG_1604", "loading")
                     }
                 }
+
+                override fun onItemDeleted(item: ViewType) {
+                    TODO("Not yet implemented")
+                }
             },
             imageShapeRecyclerView,
             requireActivity(),
-            listOf(RecyclerItemText(getString(R.string.only_text)), RecyclerItemCircle(requireContext()), RecyclerItemSquare(requireContext())))
+            listOf(
+                RecyclerItemText(getString(R.string.only_text)),
+                RecyclerItemCircle(requireContext()),
+                RecyclerItemSquare(requireContext())
+            )
+        )
         imageShapeRecyclerView.adapter = imageShapeRecyclerViewAdapter
 
         if (savedInstanceState != null) {
             imageLabelSwitch.isChecked = savedInstanceState.getBoolean(KEY_LABEL_SWITCH)
-            imageShapeRecyclerViewAdapter.selectedPosition = savedInstanceState.getInt(KEY_SHAPE_SPINNER)
+            imageShapeRecyclerViewAdapter.selectedPosition =
+                savedInstanceState.getInt(KEY_SHAPE_SPINNER)
         }
 
         view.findViewById<Button>(R.id.settings_btn_save).setOnClickListener {
             Toast.makeText(context, getString(R.string.saved), Toast.LENGTH_SHORT).show()
             DrawableManager.saveDrawable(selectedImage, DrawableManager.MOON_IMAGE_TAG)
-            requireContext().getSharedPreferences(SHARERD_PRERFERENCES_SETTINGS, Context.MODE_PRIVATE).edit().putBoolean(SHARERD_PRERFERENCES_MOON_SHOW_TEXT, imageLabelSwitch.isChecked).commit()
+            requireContext().getSharedPreferences(
+                SHARERD_PRERFERENCES_SETTINGS,
+                Context.MODE_PRIVATE
+            ).edit().putBoolean(SHARERD_PRERFERENCES_MOON_SHOW_TEXT, imageLabelSwitch.isChecked)
+                .commit()
         }
     }
 

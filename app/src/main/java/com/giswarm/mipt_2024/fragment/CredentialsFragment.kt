@@ -48,6 +48,11 @@ class CredentialsFragment : Fragment(R.layout.fragment_credentials) {
 
     private fun currentElement(idArg: Int? = null): List<RecyclerItemInputDelete> {
         val id: Int = idArg ?: paymentTypeRecyclerViewAdapter.itemCount
-        return listOf(RecyclerItemInputDelete("position$id",  (requireActivity() as MoonPositionManager).getMoonPosition().toString()))
+        return listOf(
+            RecyclerItemInputDelete(
+                "position$id",
+                (requireActivity() as MoonPositionManager).getMoonPosition().toString()
+            )
+        )
     }
 }
