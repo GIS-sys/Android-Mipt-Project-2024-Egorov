@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.ViewGroup
 import androidx.collection.SparseArrayCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -21,33 +22,48 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import java.io.IOException
 
-class PaymentTypeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener, private var recyclerView: RecyclerView, activity: Activity, itemsnew: List<ViewType>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var items: ArrayList<ViewType> = ArrayList(itemsnew)
+class PaymentTypeAdapter(private var recyclerView: RecyclerView, activity: Activity, itemsnew: List<RecyclerItemInputDelete>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    class DiffUtilCallback(private val oldList: List<RecyclerItemInputDelete>, private val newList: List<RecyclerItemInputDelete>) :
+        DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+            return oldItem.javaClass == newItem.javaClass
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+            return oldItem.hashCode() == newItem.hashCode()
+        }
+    }
+
+    private var items: ArrayList<RecyclerItemInputDelete> = ArrayList(itemsnew)
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
     var selectedPosition: Int = 0
 
     // requires at least 1 element
     init {
         if (items.isEmpty()) {
-            items.add(RecyclerItemText("PLACEHOLDER"))
+            items.add(RecyclerItemInputDelete("PLACEHOLDER","PLACEHOLDER"))
         }
 
         val listenerWithSelection = object : ViewTypeDelegateAdapter.OnViewSelectedListener {
             override fun onItemSelected(item: ViewType, position: Int) {
-                val lastSelected = selectedPosition
-                selectedPosition = position
-                listener.onItemSelected(item, position)
-                notifyItemChanged(position)
-                notifyItemChanged(lastSelected)
+            }
+
+            override fun onItemDeleted(item: ViewType) {
+                delete(item as RecyclerItemInputDelete)
             }
         }
         delegateAdapters.put(
-            AdapterConstants.IMAGE_TEXT,
-            RecyclerItemTextImageDelegateAdapter(listenerWithSelection)
-        )
-        delegateAdapters.put(
-            AdapterConstants.TEXT,
-            RecyclerItemTextDelegateAdapter(listenerWithSelection)
+            AdapterConstants.TEXT_DELETE,
+            RecyclerItemInputDeleteDelegateAdapter(listenerWithSelection)
         )
     }
 
@@ -56,21 +72,25 @@ class PaymentTypeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListene
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = delegateAdapters[viewType]!!.onCreateViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        delegateAdapters[getItemViewType(position)]!!.onBindViewHolder(holder, items[position], position==selectedPosition, position)
+        delegateAdapters[getItemViewType(position)]!!.onBindViewHolder(holder, items[position], false, 0)
     }
 
     override fun getItemViewType(position: Int) = items[position].getViewType()
 
-    fun add(newItems: List<ViewType>) {
-        items.addAll(newItems)
-        recyclerView.post {
-            notifyItemRangeInserted(items.size - newItems.size, newItems.size)
-        }
+    fun add(newItems: List<RecyclerItemInputDelete>) {
+        setNewData(items + newItems)
     }
 
-    fun clear() {
-        val lastSize = itemCount
+    fun delete(item: RecyclerItemInputDelete) {
+        var newItems = items.filterNot { it.id == item.id }
+        setNewData(newItems)
+    }
+
+    fun setNewData(newItems: List<RecyclerItemInputDelete>) {
+        val diffCallback = DiffUtilCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         items.clear()
-        notifyItemRangeRemoved(0, lastSize)
+        items.addAll(newItems)
+        diffResult.dispatchUpdatesTo(this)
     }
 }

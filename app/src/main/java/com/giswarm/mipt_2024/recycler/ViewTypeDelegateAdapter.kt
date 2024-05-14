@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 interface ViewTypeDelegateAdapter {
     interface OnViewSelectedListener {
         fun onItemSelected(item: ViewType, position: Int)
+        fun onItemDeleted(item: ViewType)
     }
 
     fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder

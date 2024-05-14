@@ -13,6 +13,7 @@
     <string name="settings_display_image_shape">Show moon as shape</string>
     <string name="accelerometer">Accelerometer</string>
     <string name="gyroscope">Gyroscope</string>
+    <string name="compass">Compass</string>
     <string name="gps">GPS</string>
     <string name="moon">Moon</string>
     <string name="only_text">Text only</string>
@@ -32,5 +33,6 @@
     <string name="chosen_payment_type">Chosen payment type: </string>
     <string name="chosen_payment_type_buy">Purchase</string>
     <string name="chosen_payment_type_subscribe">Subscription</string>
-    <string name="credentials_payment_text">Choose payment type [still under dev]</string>
+    <string name="credentials_payment_text">Save mon position</string>
+    <string name="add">Add</string>
 </resources>

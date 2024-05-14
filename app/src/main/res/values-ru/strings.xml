@@ -7,6 +7,7 @@
     <string name="settings_display_image_shape">Показывать Луну как</string>
     <string name="accelerometer">Аккселерометр</string>
     <string name="gyroscope">Гироскоп</string>
+    <string name="compass">Компас</string>
     <string name="gps">Геолокация</string>
     <string name="moon">Луна</string>
     <string name="only_text">Только текст</string>
@@ -26,5 +27,6 @@
     <string name="chosen_payment_type">Выбранный тип оплаты: </string>
     <string name="chosen_payment_type_buy">Покупка</string>
     <string name="chosen_payment_type_subscribe">Подписка</string>
-    <string name="credentials_payment_text">Выберите тип оплаты [пока в разработке]</string>
+    <string name="credentials_payment_text">Сохраните позицию луны</string>
+    <string name="add">Добавить</string>
 </resources>

@@ -25,7 +25,9 @@ class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
             IntentProcessor.actionsTransitionsList.removeFirst()
             moveToMain()
         }
-        if (requireActivity().getSharedPreferences(PREFERENCES_NAME,  Context.MODE_PRIVATE).getBoolean(PREFERENCES_ALREADY_SHOWN, false)) {
+        if (requireActivity().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+                .getBoolean(PREFERENCES_ALREADY_SHOWN, false)
+        ) {
             moveToMain()
         }
         view.findViewById<Button>(R.id.greetings_btn_go_to_main).setOnClickListener {
@@ -34,7 +36,8 @@ class GreetingsFragment : Fragment(R.layout.fragment_greetings) {
     }
 
     private fun moveToMain() {
-        requireActivity().getSharedPreferences(PREFERENCES_NAME,  Context.MODE_PRIVATE).edit().putBoolean(PREFERENCES_ALREADY_SHOWN, true).apply()
+        requireActivity().getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE).edit()
+            .putBoolean(PREFERENCES_ALREADY_SHOWN, true).apply()
         (activity as MainActivity).moveToMain()
     }
 }

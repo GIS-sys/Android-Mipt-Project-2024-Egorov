@@ -26,18 +26,22 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     IntentProcessor.actionsTransitionsList.removeFirst()
                     fragmentIndex = 0
                 }
+
                 IntentTargets.VISUAL -> {
                     IntentProcessor.actionsTransitionsList.removeFirst()
                     fragmentIndex = 1
                 }
+
                 IntentTargets.SETTINGS -> {
                     IntentProcessor.actionsTransitionsList.removeFirst()
                     moveToSettings()
                 }
+
                 IntentTargets.CREDENTIALS -> {
                     IntentProcessor.actionsTransitionsList.removeFirst()
                     moveToCredentials()
                 }
+
                 else -> Log.e("MainFragment", "Cannot move to specified intent")
             }
         }
@@ -78,7 +82,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun cycleInnerFragment() {
         fragmentIndex = (fragmentIndex + 1) % 2
-        buttonSwitchInnerFragment.text = when(fragmentIndex) {
+        buttonSwitchInnerFragment.text = when (fragmentIndex) {
             0.toLong() -> getString(R.string.change_view_image)
             1.toLong() -> getString(R.string.change_view_text)
             else -> TODO()

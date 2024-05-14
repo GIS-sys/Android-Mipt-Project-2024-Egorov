@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
-    private var devicePosition: DevicePosition = DevicePosition(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    private var compass: Sensor? = null
+    private var devicePosition: DevicePosition = DevicePosition()
 
     private lateinit var locationManager: LocationManager
     private var gpsPosition: GpsPosition = GpsPosition(0.0, 0.0)
@@ -68,6 +69,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
             devicePosition.gyrX = event.values[0].toDouble()
             devicePosition.gyrY = event.values[1].toDouble()
             devicePosition.gyrZ = event.values[2].toDouble()
+        }
+        if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
+            devicePosition.degX = event.values[0].toDouble()
+            devicePosition.degY = event.values[1].toDouble()
+            devicePosition.degZ = event.values[2].toDouble()
         }
     }
 
@@ -126,6 +132,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
         gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
         sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_UI)
+        compass = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+        sensorManager.registerListener(this, compass, SensorManager.SENSOR_DELAY_UI)
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
