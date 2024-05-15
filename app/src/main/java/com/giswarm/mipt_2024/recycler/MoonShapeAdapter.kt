@@ -89,11 +89,15 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
                             .listener(object : RequestListener<Drawable> {
                                 override fun onLoadFailed(p0: GlideException?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: Boolean): Boolean {
                                     Log.e("DEBUG_1704", "onLoadFailed")
-                                    add(listOf(RecyclerItemTextImage(currentImageLink, getDrawable(activity.applicationContext, R.drawable.mipt_android_icon)!!)))
+                                    getDrawable(activity.applicationContext, R.drawable.mipt_android_icon)?.let {
+                                        add(listOf(RecyclerItemTextImage(currentImageLink, it)))
+                                    }
                                     return true
                                 }
                                 override fun onResourceReady(p0: Drawable?, p1: Any?, p2: com.bumptech.glide.request.target.Target<Drawable>?, p3: DataSource?, p4: Boolean): Boolean {
-                                    add(listOf(RecyclerItemTextImage(currentImageLink, p0!!)))
+                                    p0?.let {
+                                        add(listOf(RecyclerItemTextImage(currentImageLink, it)))
+                                    }
                                     return true
                                 }
                             }).submit()

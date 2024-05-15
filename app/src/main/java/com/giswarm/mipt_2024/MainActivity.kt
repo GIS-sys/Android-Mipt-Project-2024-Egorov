@@ -195,16 +195,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
                         }
 
                         override fun onResponse(call: Call, response: Response) {
-                            try {
-                                val responseBody = response.body?.string()!!
+                            moonPosition.altitude = -51.84009503568756
+                            moonPosition.azimuth = -64.20681921380901
+                            response.body?.string()?.let {
                                 val moonPos: Map<String, Any?> =
-                                    jacksonObjectMapper().readValue(responseBody)
-                                moonPosition.altitude =
-                                    moonPos["moon_altitude"].toString().toDouble()
-                                moonPosition.azimuth = moonPos["moon_azimuth"].toString().toDouble()
-                            } catch (e: Exception) {
-                                moonPosition.altitude = -51.84009503568756
-                                moonPosition.azimuth = -64.20681921380901
+                                    jacksonObjectMapper().readValue(it)
+                                moonPos["moon_altitude"]?.run {
+                                    moonPosition.altitude = this.toString().toDouble()
+                                }
+                                moonPos["moon_azimuth"]?.run {
+                                    moonPosition.azimuth = this.toString().toDouble()
+                                }
                             }
                         }
                     }
