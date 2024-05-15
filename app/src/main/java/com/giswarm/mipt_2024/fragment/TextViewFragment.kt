@@ -6,12 +6,20 @@ import android.os.Handler
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.giswarm.mipt_2024.DebugSendData
 import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
+import net.bytebuddy.implementation.Implementation
+import net.bytebuddy.implementation.Implementation.Composable
 
 
 const val UPDATE_DELAY: Long = 50
@@ -27,10 +35,20 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private lateinit var textMoon: TextView
 
     private lateinit var debugIp: EditText
+    private lateinit var composableTest: ComposeView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        composableTest = view.rootView.findViewById<ComposeView>(R.id.my_composable)
+        composableTest.setContent {
+            MaterialTheme {
+                val expanded = remember { mutableStateOf(false) }
+                Surface {
+                    Text(text = "Hello! $expanded")
+                }
+            }
+        }
         textAcc = view.rootView.findViewById<TextView>(R.id.text_view_text_acc)
         textGyr = view.rootView.findViewById<TextView>(R.id.text_view_text_gyr)
         textCompass = view.rootView.findViewById<TextView>(R.id.text_view_text_com)
@@ -41,6 +59,7 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
         updater = object : Runnable {
             @SuppressLint("SetTextI18n")
             override fun run() {
+                //composableTest.expanded = true
                 val devPos = (activity as DevicePositionManager).getDevicePosition()
                 textAcc.text =
                     "${getString(R.string.accelerometer)} ${devPos.accX} ${devPos.accY} ${devPos.accZ}"

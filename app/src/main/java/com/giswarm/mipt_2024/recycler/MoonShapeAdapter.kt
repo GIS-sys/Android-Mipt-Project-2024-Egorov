@@ -109,6 +109,10 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
                 notifyItemChanged(position)
                 notifyItemChanged(lastSelected)
             }
+
+            override fun onItemDeleted(item: ViewType) {
+                TODO("Not yet implemented")
+            }
         }
         delegateAdapters.put(AdapterConstants.IMAGE_TEXT, RecyclerItemTextImageDelegateAdapter(listenerWithSelection))
         delegateAdapters.put(AdapterConstants.TEXT, RecyclerItemTextDelegateAdapter(listenerWithSelection))
