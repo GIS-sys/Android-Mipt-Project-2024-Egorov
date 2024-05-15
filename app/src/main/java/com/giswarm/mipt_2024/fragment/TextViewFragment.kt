@@ -6,46 +6,17 @@ import android.os.Handler
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.giswarm.mipt_2024.DebugSendData
 import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
-import net.bytebuddy.implementation.Implementation
-import net.bytebuddy.implementation.Implementation.Composable
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import com.giswarm.mipt_2024.composable.OneTextComposable
+import com.giswarm.mipt_2024.dataviewmodel.OneViewModel
 
 
 const val UPDATE_DELAY: Long = 50
-
-
-class DataViewModel: ViewModel() {
-    val listDataState: MutableState<String> =  mutableStateOf("tmp")
-
-    init {
-        viewModelScope.launch {
-            val data = fetchData()
-            listDataState.value = data
-
-        }
-    }
-
-    suspend fun fetchData() : String{
-        //something like:
-        return System.currentTimeMillis().toString()
-    }
-
-}
 
 class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private val handler: Handler = Handler()
@@ -59,20 +30,13 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
 
     private lateinit var debugIp: EditText
 
-    private lateinit var composableTest: ComposeView
-    private var dataViewModel: DataViewModel = DataViewModel()
+    private var dataViewModel = OneViewModel("")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        composableTest = view.rootView.findViewById<ComposeView>(R.id.my_composable)
-        composableTest.setContent {
-            MaterialTheme {
-                val expanded = remember { mutableStateOf(false) }
-                Surface {
-                    Text(text = "Hello! ${dataViewModel.listDataState.value}")
-                }
-            }
+        view.rootView.findViewById<ComposeView>(R.id.my_composable).setContent{
+            OneTextComposable(dataViewModel)
         }
 
         textAcc = view.rootView.findViewById<TextView>(R.id.text_view_text_acc)
@@ -98,7 +62,7 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
                 //DebugSendData.send(devPos, debugIp.text.toString())
                 handler.postDelayed(this, UPDATE_DELAY)
 
-                dataViewModel.listDataState.value = devPos.toString()
+                dataViewModel.text.value = devPos.toString() + "x-xy-y"
             }
         }
     }
