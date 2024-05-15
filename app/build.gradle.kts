@@ -60,6 +60,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
     implementation("androidx.compose.ui:ui-android:1.6.7")
     implementation("androidx.compose.material3:material3-android:1.2.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

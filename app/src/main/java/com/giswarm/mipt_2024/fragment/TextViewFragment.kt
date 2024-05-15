@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
@@ -20,9 +21,31 @@ import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
 import net.bytebuddy.implementation.Implementation
 import net.bytebuddy.implementation.Implementation.Composable
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 
 const val UPDATE_DELAY: Long = 50
+
+
+class DataViewModel: ViewModel() {
+    val listDataState: MutableState<String> =  mutableStateOf("tmp")
+
+    init {
+        viewModelScope.launch {
+            val data = fetchData()
+            listDataState.value = data
+
+        }
+    }
+
+    suspend fun fetchData() : String{
+        //something like:
+        return System.currentTimeMillis().toString()
+    }
+
+}
 
 class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private val handler: Handler = Handler()
@@ -35,7 +58,9 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private lateinit var textMoon: TextView
 
     private lateinit var debugIp: EditText
+
     private lateinit var composableTest: ComposeView
+    private var dataViewModel: DataViewModel = DataViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,10 +70,11 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
             MaterialTheme {
                 val expanded = remember { mutableStateOf(false) }
                 Surface {
-                    Text(text = "Hello! $expanded")
+                    Text(text = "Hello! ${dataViewModel.listDataState.value}")
                 }
             }
         }
+
         textAcc = view.rootView.findViewById<TextView>(R.id.text_view_text_acc)
         textGyr = view.rootView.findViewById<TextView>(R.id.text_view_text_gyr)
         textCompass = view.rootView.findViewById<TextView>(R.id.text_view_text_com)
@@ -59,7 +85,6 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
         updater = object : Runnable {
             @SuppressLint("SetTextI18n")
             override fun run() {
-                //composableTest.expanded = true
                 val devPos = (activity as DevicePositionManager).getDevicePosition()
                 textAcc.text =
                     "${getString(R.string.accelerometer)} ${devPos.accX} ${devPos.accY} ${devPos.accZ}"
@@ -71,7 +96,9 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
                 val moonPos = (activity as MoonPositionManager).getMoonPosition()
                 textMoon.text = "${getString(R.string.moon)} ${moonPos.azimuth} ${moonPos.altitude}"
                 //DebugSendData.send(devPos, debugIp.text.toString())
-                handler.postDelayed(this, UPDATE_DELAY);
+                handler.postDelayed(this, UPDATE_DELAY)
+
+                dataViewModel.listDataState.value = devPos.toString()
             }
         }
     }
