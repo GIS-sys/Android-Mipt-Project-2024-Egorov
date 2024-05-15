@@ -54,7 +54,7 @@ class MoonRelativePositionUseCase {
         y = (resVector[1] / resAbs).toDouble()
         val z = (resVector[1] / resAbs).toDouble()
 
-        Log.d("DEBUG_MOON_POS", "$x $y $z")
+        // Log.d("DEBUG_MOON_POS", "$x $y $z")
 
         // return
         return Pair(x, y)

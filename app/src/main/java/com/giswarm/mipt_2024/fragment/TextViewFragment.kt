@@ -14,6 +14,9 @@ import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
 import com.giswarm.mipt_2024.composable.OneTextComposable
 import com.giswarm.mipt_2024.dataviewmodel.OneViewModel
+import com.giswarm.mipt_2024.repository.DevicePositionRepository
+import com.giswarm.mipt_2024.repository.GpsPositionRepository
+import com.giswarm.mipt_2024.repository.MoonPositionRepository
 
 
 const val UPDATE_DELAY: Long = 50
@@ -27,6 +30,10 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private var comViewModel = OneViewModel("")
     private var gpsViewModel = OneViewModel("")
     private var moonViewModel = OneViewModel("")
+
+    private val devicePositionRepository = DevicePositionRepository()
+    private val gpsPositionRepository = GpsPositionRepository()
+    private val moonPositionRepository = MoonPositionRepository()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,15 +57,15 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
         updater = object : Runnable {
             @SuppressLint("SetTextI18n")
             override fun run() {
-                val devPos = (activity as DevicePositionManager).getDevicePosition()
+                val devPos = devicePositionRepository.getPosition()
                 accViewModel.text.value = "${getString(R.string.accelerometer)} ${devPos.accX} ${devPos.accY} ${devPos.accZ}"
                 gyrViewModel.text.value = "${getString(R.string.gyroscope)} ${devPos.gyrX} ${devPos.gyrY} ${devPos.gyrZ}"
                 comViewModel.text.value = "${getString(R.string.compass)} ${devPos.degX} ${devPos.degY} ${devPos.degZ}"
 
-                val gpsPos = (activity as GpsPositionManager).getGpsPosition()
+                val gpsPos = gpsPositionRepository.getPosition()
                 gpsViewModel.text.value = "${getString(R.string.gps)} ${gpsPos.lat} ${gpsPos.lng}"
 
-                val moonPos = (activity as MoonPositionManager).getMoonPosition()
+                val moonPos = moonPositionRepository.getPosition()
                 moonViewModel.text.value = "${getString(R.string.moon)} ${moonPos.azimuth} ${moonPos.altitude}"
 
                 handler.postDelayed(this, UPDATE_DELAY)
