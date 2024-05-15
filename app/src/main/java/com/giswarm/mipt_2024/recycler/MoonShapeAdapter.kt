@@ -128,7 +128,6 @@ class MoonShapeAdapter(listener: ViewTypeDelegateAdapter.OnViewSelectedListener,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = delegateAdapters[viewType]!!.onCreateViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d("DEBUG_1604", "onBindViewHolder $position $selectedPosition")
         delegateAdapters[getItemViewType(position)]!!.onBindViewHolder(holder, items[position], position==selectedPosition, position)
     }
 
