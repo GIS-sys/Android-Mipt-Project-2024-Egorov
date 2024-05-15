@@ -9,6 +9,7 @@ class DevicePositionRepository {
     }
 
     fun setPosition(newPosition: DevicePosition) {
+        // latestNewsMutex.withLock
         position = newPosition
     }
 
