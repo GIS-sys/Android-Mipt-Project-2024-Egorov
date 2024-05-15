@@ -22,47 +22,46 @@ class TextViewFragment : Fragment(R.layout.fragment_text_view) {
     private val handler: Handler = Handler()
     private lateinit var updater: Runnable
 
-    private lateinit var textAcc: TextView
-    private lateinit var textGyr: TextView
-    private lateinit var textCompass: TextView
-    private lateinit var textGps: TextView
-    private lateinit var textMoon: TextView
-
-    private lateinit var debugIp: EditText
-
-    private var dataViewModel = OneViewModel("")
+    private var accViewModel = OneViewModel("")
+    private var gyrViewModel = OneViewModel("")
+    private var comViewModel = OneViewModel("")
+    private var gpsViewModel = OneViewModel("")
+    private var moonViewModel = OneViewModel("")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.rootView.findViewById<ComposeView>(R.id.my_composable).setContent{
-            OneTextComposable(dataViewModel)
+        view.rootView.findViewById<ComposeView>(R.id.composable_text_acc).setContent{
+            OneTextComposable(accViewModel)
         }
-
-        textAcc = view.rootView.findViewById<TextView>(R.id.text_view_text_acc)
-        textGyr = view.rootView.findViewById<TextView>(R.id.text_view_text_gyr)
-        textCompass = view.rootView.findViewById<TextView>(R.id.text_view_text_com)
-        textGps = view.rootView.findViewById<TextView>(R.id.text_view_text_gps)
-        textMoon = view.rootView.findViewById<TextView>(R.id.text_view_text_moon)
-        //debugIp = view.rootView.findViewById<EditText>(R.id.edit_text_url)
+        view.rootView.findViewById<ComposeView>(R.id.composable_text_gyr).setContent{
+            OneTextComposable(gyrViewModel)
+        }
+        view.rootView.findViewById<ComposeView>(R.id.composable_text_com).setContent{
+            OneTextComposable(comViewModel)
+        }
+        view.rootView.findViewById<ComposeView>(R.id.composable_text_gps).setContent{
+            OneTextComposable(gpsViewModel)
+        }
+        view.rootView.findViewById<ComposeView>(R.id.composable_text_moon).setContent{
+            OneTextComposable(moonViewModel)
+        }
 
         updater = object : Runnable {
             @SuppressLint("SetTextI18n")
             override fun run() {
                 val devPos = (activity as DevicePositionManager).getDevicePosition()
-                textAcc.text =
-                    "${getString(R.string.accelerometer)} ${devPos.accX} ${devPos.accY} ${devPos.accZ}"
-                textGyr.text =
-                    "${getString(R.string.gyroscope)} ${devPos.gyrX} ${devPos.gyrY} ${devPos.gyrZ}"
-                textCompass.text = "${getString(R.string.compass)} ${devPos.degX} ${devPos.degY} ${devPos.degZ}"
-                val gpsPos = (activity as GpsPositionManager).getGpsPosition()
-                textGps.text = "${getString(R.string.gps)} ${gpsPos.lat} ${gpsPos.lng}"
-                val moonPos = (activity as MoonPositionManager).getMoonPosition()
-                textMoon.text = "${getString(R.string.moon)} ${moonPos.azimuth} ${moonPos.altitude}"
-                //DebugSendData.send(devPos, debugIp.text.toString())
-                handler.postDelayed(this, UPDATE_DELAY)
+                accViewModel.text.value = "${getString(R.string.accelerometer)} ${devPos.accX} ${devPos.accY} ${devPos.accZ}"
+                gyrViewModel.text.value = "${getString(R.string.gyroscope)} ${devPos.gyrX} ${devPos.gyrY} ${devPos.gyrZ}"
+                comViewModel.text.value = "${getString(R.string.compass)} ${devPos.degX} ${devPos.degY} ${devPos.degZ}"
 
-                dataViewModel.text.value = devPos.toString() + "x-xy-y"
+                val gpsPos = (activity as GpsPositionManager).getGpsPosition()
+                gpsViewModel.text.value = "${getString(R.string.gps)} ${gpsPos.lat} ${gpsPos.lng}"
+
+                val moonPos = (activity as MoonPositionManager).getMoonPosition()
+                moonViewModel.text.value = "${getString(R.string.moon)} ${moonPos.azimuth} ${moonPos.altitude}"
+
+                handler.postDelayed(this, UPDATE_DELAY)
             }
         }
     }
