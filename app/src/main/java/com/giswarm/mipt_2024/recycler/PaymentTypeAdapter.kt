@@ -26,7 +26,7 @@ class PaymentTypeAdapter(itemsNew: List<RecyclerItemInputDelete>) : RecyclerView
         }
     }
 
-    private var items: ArrayList<RecyclerItemInputDelete> = ArrayList(itemsNew)
+    var items: ArrayList<RecyclerItemInputDelete> = ArrayList(itemsNew)
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
     var selectedPosition: Int = 0
 

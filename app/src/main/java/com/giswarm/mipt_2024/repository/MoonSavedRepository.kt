@@ -1,16 +1,18 @@
 package com.giswarm.mipt_2024.repository
 
 import com.giswarm.mipt_2024.position.DevicePosition
+import com.giswarm.mipt_2024.recycler.RecyclerItemInputDelete
 
 class MoonSavedRepository {
     companion object {
         @Volatile
-        private var position: DevicePosition = DevicePosition()
+        private var items: List<RecyclerItemInputDelete> = listOf()
     }
 
-    fun setPosition(newPosition: DevicePosition) {
+    fun setSavedList(newItems: List<RecyclerItemInputDelete>) {
         // latestNewsMutex.withLock
-        position = newPosition
+        items = newItems
     }
-    fun getPosition(): DevicePosition = position
+
+    fun getSavedList(): List<RecyclerItemInputDelete> = items
 }

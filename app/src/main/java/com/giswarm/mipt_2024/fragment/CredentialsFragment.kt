@@ -23,6 +23,7 @@ import com.giswarm.mipt_2024.recycler.RecyclerItemTextImage
 import com.giswarm.mipt_2024.recycler.ViewType
 import com.giswarm.mipt_2024.recycler.ViewTypeDelegateAdapter
 import com.giswarm.mipt_2024.repository.MoonPositionRepository
+import com.giswarm.mipt_2024.repository.MoonSavedRepository
 import com.giswarm.mipt_2024.storage.Consts
 import com.giswarm.mipt_2024.storage.DrawableManager
 
@@ -32,6 +33,7 @@ class CredentialsFragment : Fragment(R.layout.fragment_credentials) {
     private lateinit var buttonAdd: Button
 
     private val moonPositionRepository = MoonPositionRepository()
+    private val moonSavedRepository = MoonSavedRepository()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,13 +41,14 @@ class CredentialsFragment : Fragment(R.layout.fragment_credentials) {
         paymentTypeRecyclerView = view.findViewById(R.id.cred_payment_recycler_view)
         paymentTypeRecyclerView.layoutManager = LinearLayoutManager(activity)
         paymentTypeRecyclerViewAdapter = PaymentTypeAdapter(
-            currentElement(0)
+            moonSavedRepository.getSavedList().ifEmpty { currentElement(0) }
         )
         paymentTypeRecyclerView.adapter = paymentTypeRecyclerViewAdapter
 
         buttonAdd = view.findViewById(R.id.cred_payment_btn)
         buttonAdd.setOnClickListener {
             paymentTypeRecyclerViewAdapter.add(currentElement())
+            moonSavedRepository.setSavedList(paymentTypeRecyclerViewAdapter.items)
         }
     }
 
