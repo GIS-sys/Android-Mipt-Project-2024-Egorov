@@ -39,8 +39,6 @@ class CredentialsFragment : Fragment(R.layout.fragment_credentials) {
         paymentTypeRecyclerView = view.findViewById(R.id.cred_payment_recycler_view)
         paymentTypeRecyclerView.layoutManager = LinearLayoutManager(activity)
         paymentTypeRecyclerViewAdapter = PaymentTypeAdapter(
-            paymentTypeRecyclerView,
-            requireActivity(),
             currentElement(0)
         )
         paymentTypeRecyclerView.adapter = paymentTypeRecyclerViewAdapter
