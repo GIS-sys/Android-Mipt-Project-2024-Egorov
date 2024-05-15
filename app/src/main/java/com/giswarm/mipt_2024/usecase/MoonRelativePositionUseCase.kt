@@ -22,10 +22,10 @@ import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class MoonRelativePositionUseCase(context: Activity) {
+class MoonRelativePositionUseCase(/*context: Activity*/) {
     private var devicePositionRepository: DevicePositionRepository = DevicePositionRepository()
     private var moonPositionRepository: MoonPositionRepository = MoonPositionRepository()
-    private var settingsRepository: SettingsRepository = SettingsRepository(context)
+    private var settingsRepository: SettingsRepository = SettingsRepository(/*context*/)
 
     private fun calculateMoonPosition(): Pair<Double, Double> {
         // get data

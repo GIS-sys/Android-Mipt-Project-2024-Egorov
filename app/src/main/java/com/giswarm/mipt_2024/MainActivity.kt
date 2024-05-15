@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
                             response.body?.string()?.let {
                                 val moonPos: Map<String, Any?> =
                                     jacksonObjectMapper().readValue(it)
-                                moonPos["moon_altitude"]?.let { alt ->
+                                /*moonPos["moon_altitude"]?.let { alt ->
                                     moonPos["moon_azimuth"]?.let { azi ->
                                         {
                                             moonPositionRepository.setPosition(
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
                                             )
                                         }
                                     }
-                                }
+                                }*/
 
                             }
                         }

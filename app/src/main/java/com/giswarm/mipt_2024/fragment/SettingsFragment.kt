@@ -35,7 +35,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var imageShapeRecyclerViewAdapter: MoonShapeAdapter
 
     private var selectedImage: Drawable? = null
-    private val settingsRepository = SettingsRepository(requireActivity())
+    private val settingsRepository = SettingsRepository(/*requireActivity()*/)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

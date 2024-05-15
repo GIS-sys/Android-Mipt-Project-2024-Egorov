@@ -35,7 +35,7 @@ const val VISUAL_VIEW_UPDATE_DELAY: Long = 30
 class VisualViewFragment : Fragment(R.layout.fragment_visual_view) {
     private var screenWidth: Int = 0
     private var screenHeight: Int = 0
-    private val moonRelativePositionUseCase = MoonRelativePositionUseCase(requireActivity())
+    private val moonRelativePositionUseCase = MoonRelativePositionUseCase(/*requireActivity()*/)
 
     private val bitmapModel = BitmapModel(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
 
