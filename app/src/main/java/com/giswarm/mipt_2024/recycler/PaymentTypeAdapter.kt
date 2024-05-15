@@ -86,7 +86,7 @@ class PaymentTypeAdapter(private var recyclerView: RecyclerView, activity: Activ
         setNewData(newItems)
     }
 
-    fun setNewData(newItems: List<RecyclerItemInputDelete>) {
+    private fun setNewData(newItems: List<RecyclerItemInputDelete>) {
         val diffCallback = DiffUtilCallback(items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         items.clear()

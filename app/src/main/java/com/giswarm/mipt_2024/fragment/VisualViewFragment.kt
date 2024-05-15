@@ -17,6 +17,7 @@ import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
 import com.giswarm.mipt_2024.storage.Consts
 import com.giswarm.mipt_2024.storage.DrawableManager
+import com.giswarm.mipt_2024.usecase.MoonRelativePositionUseCase
 import kotlin.math.PI
 import kotlin.math.acos
 import kotlin.math.cos
@@ -30,6 +31,7 @@ const val VISUAL_VIEW_UPDATE_DELAY: Long = 30
 class VisualViewFragment : Fragment(R.layout.fragment_visual_view) {
     private var screenWidth: Int = 0
     private var screenHeight: Int = 0
+    private val moonRelativePositionUseCase = MoonRelativePositionUseCase()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,53 +60,8 @@ class VisualViewFragment : Fragment(R.layout.fragment_visual_view) {
         }.start()
     }
 
-    private fun calculateMoonPosition(): Pair<Double, Double> {
-        // get data
-        val pos = (requireActivity() as DevicePositionManager).getDevicePosition()
-        val moonPos = (requireActivity() as MoonPositionManager).getMoonPosition()
-        val x: Double
-        val y: Double
-
-        // device position
-        val mAccelerometerData = FloatArray(3)
-        mAccelerometerData[0] = pos.accX.toFloat()
-        mAccelerometerData[1] = pos.accY.toFloat()
-        mAccelerometerData[2] = pos.accZ.toFloat()
-        val mMagnetometerData = FloatArray(3)
-        mMagnetometerData[0] = pos.degX.toFloat()
-        mMagnetometerData[1] = pos.degY.toFloat()
-        mMagnetometerData[2] = pos.degZ.toFloat()
-        val mMatrix = FloatArray(9)
-        SensorManager.getRotationMatrix(mMatrix, null, mAccelerometerData, mMagnetometerData)
-
-        // moon vector
-        val moonVector = FloatArray(3)
-        moonVector[0] = (sin(moonPos.altitude / 180 * PI)).toFloat()
-        moonVector[1] = (cos(moonPos.altitude / 180 * PI) * sin(moonPos.azimuth / 180 * PI)).toFloat()
-        moonVector[2] = (cos(moonPos.altitude / 180 * PI) * cos(moonPos.azimuth / 180 * PI)).toFloat()
-
-        // resulting vector
-        val resVector = FloatArray(3)
-        resVector[0] =
-            mMatrix[0] * moonVector[0] + mMatrix[3] * moonVector[1] + mMatrix[6] * moonVector[2]
-        resVector[1] =
-            mMatrix[1] * moonVector[0] + mMatrix[4] * moonVector[1] + mMatrix[7] * moonVector[2]
-        resVector[2] =
-            mMatrix[2] * moonVector[0] + mMatrix[5] * moonVector[1] + mMatrix[8] * moonVector[2]
-        val resAbs =
-            sqrt(resVector[0] * resVector[0] + resVector[1] * resVector[1] + resVector[2] * resVector[2])
-        x = -(resVector[0] / resAbs).toDouble()
-        y = (resVector[1] / resAbs).toDouble()
-        val z = (resVector[1] / resAbs).toDouble()
-
-        Log.d("DEBUG_MOON_POS", "$x $y $z")
-
-        // return
-        return Pair(x, y)
-    }
-
     private fun draw(view: View) {
-        var (moonXraw, moonYraw) = calculateMoonPosition()
+        var (moonXraw, moonYraw) = moonRelativePositionUseCase.calculateMoonPosition()
 
         // screen constants
         val halfSize: Int = (min(screenHeight, screenWidth) * 0.1).toInt()

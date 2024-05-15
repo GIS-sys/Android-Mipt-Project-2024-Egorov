@@ -32,6 +32,9 @@ import com.giswarm.mipt_2024.position.GpsPosition
 import com.giswarm.mipt_2024.position.GpsPositionManager
 import com.giswarm.mipt_2024.position.MoonPosition
 import com.giswarm.mipt_2024.position.MoonPositionManager
+import com.giswarm.mipt_2024.repository.DevicePositionRepository
+import com.giswarm.mipt_2024.repository.GpsPositionRepository
+import com.giswarm.mipt_2024.repository.MoonPositionRepository
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -44,42 +47,48 @@ import java.util.TimerTask
 
 const val READ_ALL_LOCATION_PERMISSION_CODE = 111
 
-class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener, DevicePositionManager, GpsPositionManager, MoonPositionManager {
+class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
+    DevicePositionManager, GpsPositionManager, MoonPositionManager {
     private lateinit var sensorManager: SensorManager
     private var accelerometer: Sensor? = null
     private var gyroscope: Sensor? = null
     private var compass: Sensor? = null
-    private var devicePosition: DevicePosition = DevicePosition()
-
     private lateinit var locationManager: LocationManager
-    private var gpsPosition: GpsPosition = GpsPosition(0.0, 0.0)
 
-    private var moonPosition: MoonPosition = MoonPosition(0.0, 0.0)
     private val timerMoon = Timer()
+
+    private val devicePositionRepository = DevicePositionRepository()
+    private val moonPositionRepository = MoonPositionRepository()
+    private val gpsPositionRepository = GpsPositionRepository()
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
 
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            devicePosition.accX = event.values[0].toDouble()
-            devicePosition.accY = event.values[1].toDouble()
-            devicePosition.accZ = event.values[2].toDouble()
+            devicePositionRepository.setAcc(
+                event.values[0].toDouble(),
+                event.values[1].toDouble(),
+                event.values[2].toDouble()
+            )
         }
         if (event.sensor.type == Sensor.TYPE_GYROSCOPE) {
-            devicePosition.gyrX = event.values[0].toDouble()
-            devicePosition.gyrY = event.values[1].toDouble()
-            devicePosition.gyrZ = event.values[2].toDouble()
+            devicePositionRepository.setGyr(
+                event.values[0].toDouble(),
+                event.values[1].toDouble(),
+                event.values[2].toDouble()
+            )
         }
         if (event.sensor.type == Sensor.TYPE_MAGNETIC_FIELD) {
-            devicePosition.degX = event.values[0].toDouble()
-            devicePosition.degY = event.values[1].toDouble()
-            devicePosition.degZ = event.values[2].toDouble()
+            devicePositionRepository.setCom(
+                event.values[0].toDouble(),
+                event.values[1].toDouble(),
+                event.values[2].toDouble()
+            )
         }
     }
 
     override fun onLocationChanged(location: Location) {
-        gpsPosition.lng = location.longitude
-        gpsPosition.lat = location.latitude
+        gpsPositionRepository.setPosition(GpsPosition(location.latitude, location.longitude))
     }
 
     private fun initLocationUpdates() {
@@ -112,15 +121,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
     }
 
     override fun getDevicePosition(): DevicePosition {
-        return devicePosition
+        return devicePositionRepository.getPosition()
     }
 
     override fun getGpsPosition(): GpsPosition {
-        return gpsPosition
+        return gpsPositionRepository.getPosition()
     }
 
     override fun getMoonPosition(): MoonPosition {
-        return moonPosition
+        return moonPositionRepository.getPosition()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -185,8 +194,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
                 OkHttpClient().newCall(
                     Request.Builder()
                         // REMOVE TMP FROM KEY FOR REAL TEST - for now wrong api key to not waste limits
-                        .url("https://api.ipgeolocation.io/astronomy?apiKey=fc95889c2ce94d59900262967d16113cTMP&lat=${gpsPosition.lat}&long=${gpsPosition.lng}")
-                        //.header("Authorization", "Bearer ")
+                        .url(
+                            "https://api.ipgeolocation.io/astronomy?apiKey=fc95889c2ce94d59900262967d16113cTMP&" +
+                                    "lat=${gpsPositionRepository.getPosition().lat}&" +
+                                    "long=${gpsPositionRepository.getPosition().lng}"
+                        )
                         .build()
                 ).enqueue(
                     object : Callback {
@@ -195,17 +207,22 @@ class MainActivity : AppCompatActivity(), SensorEventListener, LocationListener,
                         }
 
                         override fun onResponse(call: Call, response: Response) {
-                            moonPosition.altitude = -51.84009503568756
-                            moonPosition.azimuth = -64.20681921380901
                             response.body?.string()?.let {
                                 val moonPos: Map<String, Any?> =
                                     jacksonObjectMapper().readValue(it)
-                                moonPos["moon_altitude"]?.run {
-                                    moonPosition.altitude = this.toString().toDouble()
+                                moonPos["moon_altitude"]?.let { alt ->
+                                    moonPos["moon_azimuth"]?.let { azi ->
+                                        {
+                                            moonPositionRepository.setPosition(
+                                                MoonPosition(
+                                                    alt.toString().toDouble(),
+                                                    azi.toString().toDouble()
+                                                )
+                                            )
+                                        }
+                                    }
                                 }
-                                moonPos["moon_azimuth"]?.run {
-                                    moonPosition.azimuth = this.toString().toDouble()
-                                }
+
                             }
                         }
                     }
