@@ -20,6 +20,7 @@ import com.giswarm.mipt_2024.recycler.RecyclerItemText
 import com.giswarm.mipt_2024.recycler.RecyclerItemTextImage
 import com.giswarm.mipt_2024.recycler.ViewType
 import com.giswarm.mipt_2024.recycler.ViewTypeDelegateAdapter
+import com.giswarm.mipt_2024.repository.SettingsRepository
 import com.giswarm.mipt_2024.storage.Consts.SHARERD_PRERFERENCES_MOON_SHOW_TEXT
 import com.giswarm.mipt_2024.storage.Consts.SHARERD_PRERFERENCES_SETTINGS
 
@@ -34,6 +35,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var imageShapeRecyclerViewAdapter: MoonShapeAdapter
 
     private var selectedImage: Drawable? = null
+    private val settingsRepository = SettingsRepository(requireActivity())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,12 +76,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         view.findViewById<Button>(R.id.settings_btn_save).setOnClickListener {
             Toast.makeText(context, getString(R.string.saved), Toast.LENGTH_SHORT).show()
-            DrawableManager.saveDrawable(selectedImage, DrawableManager.MOON_IMAGE_TAG)
-            requireContext().getSharedPreferences(
-                SHARERD_PRERFERENCES_SETTINGS,
-                Context.MODE_PRIVATE
-            ).edit().putBoolean(SHARERD_PRERFERENCES_MOON_SHOW_TEXT, imageLabelSwitch.isChecked)
-                .commit()
+            settingsRepository.setMoonShape(selectedImage)
+            settingsRepository.setShowText(imageLabelSwitch.isChecked)
         }
     }
 

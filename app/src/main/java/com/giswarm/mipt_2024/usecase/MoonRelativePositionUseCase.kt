@@ -1,21 +1,33 @@
 package com.giswarm.mipt_2024.usecase
 
+import android.app.Activity
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.hardware.SensorManager
 import android.util.Log
+import android.view.View
+import com.giswarm.mipt_2024.R
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
 import com.giswarm.mipt_2024.repository.DevicePositionRepository
 import com.giswarm.mipt_2024.repository.MoonPositionRepository
+import com.giswarm.mipt_2024.repository.SettingsRepository
+import com.giswarm.mipt_2024.storage.Consts
+import com.giswarm.mipt_2024.storage.DrawableManager
 import kotlin.math.PI
 import kotlin.math.cos
+import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class MoonRelativePositionUseCase {
+class MoonRelativePositionUseCase(context: Activity) {
     private var devicePositionRepository: DevicePositionRepository = DevicePositionRepository()
     private var moonPositionRepository: MoonPositionRepository = MoonPositionRepository()
+    private var settingsRepository: SettingsRepository = SettingsRepository(context)
 
-    fun calculateMoonPosition(): Pair<Double, Double> {
+    private fun calculateMoonPosition(): Pair<Double, Double> {
         // get data
         val pos = devicePositionRepository.getPosition()
         val moonPos = moonPositionRepository.getPosition()
@@ -58,5 +70,46 @@ class MoonRelativePositionUseCase {
 
         // return
         return Pair(x, y)
+    }
+
+    fun getBitmap(screenWidth: Int, screenHeight: Int, activity: Context): Bitmap {
+        var (moonXraw, moonYraw) = calculateMoonPosition()
+
+        // screen constants
+        val halfSize: Int = (min(screenHeight, screenWidth) * 0.1).toInt()
+        val centerX: Int = screenWidth / 2
+        val centerY: Int = screenHeight / 2
+        val moonX = (moonXraw * min(screenHeight, screenWidth) / 2).toInt()
+        val moonY = (moonYraw * min(screenHeight, screenWidth) / 2).toInt()
+
+        // define basic canvas / bitmaps
+        val bitmap: Bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888)
+        val canvas: Canvas = Canvas(bitmap)
+
+        // choose and draw moon
+        val shapeDrawable = settingsRepository.getMoonShape()
+        if (shapeDrawable != null) {
+            shapeDrawable.setBounds(
+                centerX - halfSize + moonX,
+                centerY - halfSize + moonY,
+                centerX + halfSize + moonX,
+                centerY + halfSize + moonY
+            )
+            shapeDrawable.draw(canvas)
+        }
+        if (shapeDrawable == null || settingsRepository.isShowText()) {
+            val paint = Paint()
+            paint.textSize = activity.resources.getDimension(R.dimen.text_medium)
+            paint.textAlign = Paint.Align.CENTER
+            canvas.drawText(
+                activity.getString(R.string.moon) + "TODO",
+                centerX.toFloat() + moonX,
+                centerY.toFloat() + moonY,
+                paint
+            )
+        }
+
+        // show image
+        return bitmap
     }
 }

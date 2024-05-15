@@ -4,4 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/visual_view_fragment_layout">
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/composable_visual_canvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

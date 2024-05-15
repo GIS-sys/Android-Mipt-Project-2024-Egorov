@@ -11,8 +11,12 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.giswarm.mipt_2024.R
+import com.giswarm.mipt_2024.composable.CanvasMoonComposable
+import com.giswarm.mipt_2024.composable.OneTextComposable
+import com.giswarm.mipt_2024.dataviewmodel.BitmapModel
 import com.giswarm.mipt_2024.position.DevicePositionManager
 import com.giswarm.mipt_2024.position.MoonPositionManager
 import com.giswarm.mipt_2024.storage.Consts
@@ -31,7 +35,10 @@ const val VISUAL_VIEW_UPDATE_DELAY: Long = 30
 class VisualViewFragment : Fragment(R.layout.fragment_visual_view) {
     private var screenWidth: Int = 0
     private var screenHeight: Int = 0
-    private val moonRelativePositionUseCase = MoonRelativePositionUseCase()
+    private val moonRelativePositionUseCase = MoonRelativePositionUseCase(requireActivity())
+
+    private val bitmapModel = BitmapModel(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,72 +47,22 @@ class VisualViewFragment : Fragment(R.layout.fragment_visual_view) {
         screenWidth = displayMetrics.widthPixels
         screenHeight = displayMetrics.heightPixels
 
+        view.rootView.findViewById<ComposeView>(R.id.composable_visual_canvas).setContent{
+            CanvasMoonComposable(bitmapModel)
+        }
+
         Thread {
             while (true) {
                 try {
                     Thread.sleep(VISUAL_VIEW_UPDATE_DELAY);
                 } catch (e: InterruptedException) {
-                    Log.e("DEBUG1305", "interrupted run()");
+                    Log.e("DEBUG1305", "interrupted sleep");
                 }
                 try {
-                    requireActivity().runOnUiThread {
-                        try {
-                            draw(view)
-                        } catch (_: java.lang.IllegalStateException) {
-                        }
-                    }
+                    bitmapModel.image.value = moonRelativePositionUseCase.getBitmap(screenWidth, screenHeight, requireActivity())
                 } catch (_: java.lang.IllegalStateException) {
                 }
             }
         }.start()
-    }
-
-    private fun draw(view: View) {
-        var (moonXraw, moonYraw) = moonRelativePositionUseCase.calculateMoonPosition()
-
-        // screen constants
-        val halfSize: Int = (min(screenHeight, screenWidth) * 0.1).toInt()
-        val centerX: Int = screenWidth / 2
-        val centerY: Int = screenHeight / 2
-        val moonX = (moonXraw * min(screenHeight, screenWidth) / 2).toInt()
-        val moonY = (moonYraw * min(screenHeight, screenWidth) / 2).toInt()
-
-        // define basic canvas / bitmaps
-        val bitmap: Bitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888)
-        val canvas: Canvas = Canvas(bitmap)
-
-        // choose and draw moon
-        val shapeDrawable = DrawableManager.loadDrawable(DrawableManager.MOON_IMAGE_TAG)
-        if (shapeDrawable != null) {
-            shapeDrawable.setBounds(
-                centerX - halfSize + moonX,
-                centerY - halfSize + moonY,
-                centerX + halfSize + moonX,
-                centerY + halfSize + moonY
-            )
-            shapeDrawable.draw(canvas)
-        }
-        if (shapeDrawable == null ||
-            requireContext().getSharedPreferences(
-                Consts.SHARERD_PRERFERENCES_SETTINGS,
-                Context.MODE_PRIVATE
-            ).getBoolean(
-                Consts.SHARERD_PRERFERENCES_MOON_SHOW_TEXT, false
-            )
-        ) {
-            val paint = Paint()
-            paint.textSize = resources.getDimension(R.dimen.text_medium)
-            paint.textAlign = Paint.Align.CENTER;
-            canvas.drawText(
-                getString(R.string.moon),
-                centerX.toFloat() + moonX,
-                centerY.toFloat() + moonY,
-                paint
-            )
-        }
-
-        // show image
-        view.findViewById<LinearLayout>(R.id.visual_view_fragment_layout).background =
-            BitmapDrawable(resources, bitmap)
     }
 }
