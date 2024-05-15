@@ -9,18 +9,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.giswarm.mipt_2024.R
 
-class RecyclerItemInputDeleteDelegateAdapter (val viewActions: ViewTypeDelegateAdapter.OnViewSelectedListener) : ViewTypeDelegateAdapter {
+class RecyclerItemInputDeleteDelegateAdapter(val viewActions: ViewTypeDelegateAdapter.OnViewSelectedListener) :
+    ViewTypeDelegateAdapter {
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         return InputDeleteViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType, isSelected: Boolean, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        item: ViewType,
+        isSelected: Boolean,
+        position: Int
+    ) {
         holder as InputDeleteViewHolder
         holder.bind(item as RecyclerItemInputDelete)
     }
 
     inner class InputDeleteViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        parent.inflate(R.layout.recycler_view_item_input_delete)) {
+        parent.inflate(R.layout.recycler_view_item_input_delete)
+    ) {
 
         private val editView: EditText = itemView.findViewById(R.id.editView)
         private val btnView: Button = itemView.findViewById(R.id.btnView)

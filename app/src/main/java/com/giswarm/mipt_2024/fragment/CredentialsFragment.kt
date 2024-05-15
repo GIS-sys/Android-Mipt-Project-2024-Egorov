@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.giswarm.mipt_2024.R
+import com.giswarm.mipt_2024.composable.OneTextComposable
 import com.giswarm.mipt_2024.position.MoonPositionManager
 import com.giswarm.mipt_2024.recycler.MoonShapeAdapter
 import com.giswarm.mipt_2024.recycler.PaymentTypeAdapter

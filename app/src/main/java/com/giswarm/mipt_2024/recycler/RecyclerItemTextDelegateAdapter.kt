@@ -6,18 +6,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.giswarm.mipt_2024.R
 
-class RecyclerItemTextDelegateAdapter (val viewActions: ViewTypeDelegateAdapter.OnViewSelectedListener) : ViewTypeDelegateAdapter {
+class RecyclerItemTextDelegateAdapter(val viewActions: ViewTypeDelegateAdapter.OnViewSelectedListener) :
+    ViewTypeDelegateAdapter {
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         return TextViewHolder(parent)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: ViewType, isSelected: Boolean, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        item: ViewType,
+        isSelected: Boolean,
+        position: Int
+    ) {
         holder as TextViewHolder
         holder.bind(item as RecyclerItemText, isSelected, position)
     }
 
     inner class TextViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        parent.inflate(R.layout.recycler_view_item_text)) {
+        parent.inflate(R.layout.recycler_view_item_text)
+    ) {
 
         private val textView: TextView = itemView.findViewById(R.id.textView)
 
