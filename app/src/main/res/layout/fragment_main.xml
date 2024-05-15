@@ -7,7 +7,7 @@
     android:layout_width="match_parent" >
 
     <LinearLayout
-        android:background="#ee55ee"
+        android:background="@drawable/stars_tile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
